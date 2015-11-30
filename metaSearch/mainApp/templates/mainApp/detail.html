@@ -1,0 +1,22 @@
+{% extends "mainApp/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <h3>{{ orga.title }}</h3>
+</div>
+<div class="form-horizontal">
+  <div class="media">
+    <div class="media-left">
+      <a href="{{ orga.url }}" class="thumbnail">
+        <img class="media-object" src="" alt="Logo placeholder" style="height:100px; width:100px;">
+      </a>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Description</h4>
+      <p>{{ orga.description }}</p>
+      <!--<h4 class="media-heading">URL</h4>-->
+      <p><a href="{{ orga.url }}">{{orga.url}}</a></p>
+    </div>
+  </div>
+</div>
+{%endblock%}

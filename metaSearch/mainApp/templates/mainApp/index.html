@@ -1,0 +1,22 @@
+{% extends "mainApp/base.html" %}
+
+{% block content %}
+  <form action="" method="POST" class="form-inline">
+    <input type="text" name="query" class="form-control" placeholder="Search">
+    <button type="button" value="Search" class="btn btn-default">Search</button>
+  </form>
+  <small class="hidden"><span class="caret"> </span> more options</small>
+  <br>
+{% if orga_list %}
+    <ul id="list">
+    {% for orga in orga_list %}
+        <li><a href="{% url 'detail' orga.id %}">{{ orga.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Organisations are available.</p>
+{% endif %}
+<script>
+  $('#list').append('<li>jquery test</li>');
+</script>
+{%endblock%}
