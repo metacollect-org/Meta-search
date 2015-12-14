@@ -7,10 +7,15 @@
   </form>
   <small class="hidden"><span class="caret"> </span> more options</small>
   <br>
+  <!--<script>
+  $.getJSON("http://meta.refugeehelper.net/api/projects", function(json) {
+    console.log(json);
+  })
+</script>-->
 {% if orga_list %}
     <ul id="list">
     {% for orga in orga_list %}
-        <li><a href="{% url 'detail' orga.id %}">{{ orga.title }}</a></li>
+        <li><a href="{% url 'detail' orga.id %}">{{ orga.name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
