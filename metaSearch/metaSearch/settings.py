@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'mainApp',
 )
 
@@ -71,6 +72,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'metaSearch.wsgi.application'
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'projects',
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 40
+
 
 
 # Database
@@ -111,4 +125,4 @@ USE_X_FORWARDED_HOST = True
 
 ALLOWED_HOSTS = [
   'django.dsini20.schedar.uberspace.de/'
-] 
+]
