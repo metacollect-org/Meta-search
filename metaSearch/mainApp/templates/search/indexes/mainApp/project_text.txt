@@ -1,0 +1,6 @@
+{{object.title}}
+{{object.description}}
+{{object.area_country}}
+{{object.area_city}}
+{{object.area_state}}
+{{object.needs}}

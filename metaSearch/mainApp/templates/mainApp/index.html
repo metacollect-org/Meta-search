@@ -1,12 +1,13 @@
 {% extends "mainApp/base.html" %}
 
 {% block content %}
-  <form action="" method="POST" class="form-inline">
-    <input type="text" name="query" class="form-control" placeholder="Search">
+  <form action="" method="GETModel could not be found" class="form-inline">
+    <input type="text" name="query" class="form-control" placeholder="Search" id="search" autocomplete="off">
     <button type="button" value="Search" class="btn btn-default">Search</button>
   </form>
   <small class="hidden"><span class="caret"> </span> more options</small>
   <br>
+  <div id="search-results"></div>
   <!--<script>
   $.getJSON("http://meta.refugeehelper.net/api/projects", function(json) {
     console.log(json);
@@ -15,7 +16,7 @@
 {% if orga_list %}
     <ul id="list">
     {% for orga in orga_list %}
-        <li><a href="{% url 'detail' orga.id %}">{{ orga.name }}</a></li>
+        <li><a href="{% url 'detail' orga.object.id %}">{{ orga.object.title }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

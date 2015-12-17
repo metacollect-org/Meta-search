@@ -1,0 +1,15 @@
+{% extends 'mainApp/base.html' %}
+
+{% block content %}
+<form type="get" action=".">
+    <input type="text" name="q">
+    <button type="submit">Search</button>
+</form>
+
+{% for project in projects %}
+<h1>{{ project.object.title }}</h1>
+<p>
+    {{ project.object.description }}
+</p>
+{% endfor %}
+{% endblock %}

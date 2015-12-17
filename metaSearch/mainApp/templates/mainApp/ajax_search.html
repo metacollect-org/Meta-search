@@ -1,0 +1,9 @@
+{% if  projects.count > 0 %}
+
+{% for project in projects %}
+    <li><a href="/mainApp/{{ project.object.id }}/">{{project.object.title}}</a></li>
+{% endfor %}
+{% else %}
+<li> none to show</li>
+
+{% endif %}
