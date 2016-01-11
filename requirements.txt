@@ -1,0 +1,3 @@
+meta-search
+django==1.8
+django-haystack
