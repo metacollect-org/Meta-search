@@ -5,6 +5,7 @@ STATUS = (
     (0, 'Inactive'),
     (1, 'Active'),
     (2, 'In Progress'),
+    (3, 'Unspecified'),
 )
 
 KINDS = (
@@ -12,19 +13,47 @@ KINDS = (
     (1, 'App'),
     (2, 'Map'),
     (3, 'Facebook'),
+    (4, 'Unspecified'),
 )
 
 PROGRAMMING_LANGUAGES = (
     (0, 'Python'),
+    (1, 'Unspecified'),
 )
-
+#English,
+# German,
+# French,
+# Arab,
+# Pashto,
+# Persian,
+# Tigrinya,
+# Srpski,
+# српски,
+# Albanian,
+# македонски
 PAGE_LANGUAGES = (
-    (0, 'en'),
+    (0, 'en'), # english
+    (1, 'de'), # deutsch
+    (3, 'fr'), # french
+    (4, 'ar'), # arabic
+    (5, 'fa'), # farsi/persian
+    (6, 'mk'), # македонски
+    (7, 'ps'), # pashto
+    (8, 'ti'), # Tigrinya
+    (9, 'sr'), # Srpski (Serbisch) (српски)
+    (10, 'sq'), # shqip, Albanien
+    (11, 'Unspecified'),
 )
 
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+class ProgrammingLanguage(models.Model):
+    name = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
@@ -52,7 +81,8 @@ class Project(models.Model):
     contact_address_country = models.CharField(max_length=200)
     languages = models.IntegerField(choices=PAGE_LANGUAGES) # multiple
     needs = models.CharField(max_length=200, null=True, blank=True) # optional
-    programming_language = models.IntegerField(choices=PROGRAMMING_LANGUAGES, null=True, blank=True) # multiple
+#    programming_language = models.IntegerField(choices=PROGRAMMING_LANGUAGES, null=True, blank=True) # multiple
+    programming_languages = models.ManyToManyField(ProgrammingLanguage)
 
     def __str__(self):
         return self.title
