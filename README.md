@@ -22,5 +22,6 @@ Das Projekt wird im Rahmen eines Seminars an der TU Berlin umgesetzt. Gemeinsam 
 6. Download elasticsearch 1.7.4 : `wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.4.zip`, unpack anywhere you like, and run it.
 6. Run `$python manage.py migrate`
 7. Run `$python manage.py rebuild_index` to initalise the elasticsearch instance and re-run to copy changes from db to elastic
-8. Start Meta-Search with $python manage.py runserver locally. For making it accessible over your IP for everybody use $python manage.py runserver 0.0.0.0:8000  
-9. You can see the result of the project if you access localhost:8000 in your browser.
+8. Run `$python manage.py load_csv_data` to Download the Project data and integrate it into the database
+9. Start Meta-Search with $python manage.py runserver locally. For making it accessible over your IP for everybody use $python manage.py runserver 0.0.0.0:8000  
+10. You can see the result of the project if you access localhost:8000 in your browser.
