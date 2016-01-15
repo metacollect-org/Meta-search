@@ -16,33 +16,26 @@ KINDS = (
     (4, 'Unspecified'),
 )
 
-#PROGRAMMING_LANGUAGES = (
-    #(0, 'Python'),
-    #(1, 'Unspecified'),
-#)
-#English,
+# English,
 # German,
-# French,
-# Arab,
-# Pashto,
-# Persian,
-# Tigrinya,
-# Srpski,
-# српски,
+
+# Polen,
 # Albanian,
-# македонски
+# Rumänien
+# Bulgarien
+# Ungarn
+# Türkei
+# Serbien
+# Italien
+# Russland
+# Syrien
+# Irak
+# Eritrea
+
+def default_logo():
+    return "https://openclipart.org/image/2400px/svg_to_png/201970/refugees-welcome.png"
+
 class PageLanguage(models.Model):
-    #ENGLISH = 'en', # english
-    #GERMAN = 'de', # deutsch
-    #FRENCH = 'fr', # french
-    #ARABIC = 'ar', # arabic
-    #FARSI = 'fa', # farsi/persian
-    #(6, 'mk'), # македонски
-    #(7, 'ps'), # pashto
-    #(8, 'ti'), # Tigrinya
-    #(9, 'sr'), # Srpski (Serbisch) (српски)
-    #(10, 'sq'), # shqip, Albanien
-    #(11, 'Unspecified'),
     name = models.CharField(max_length=200)
     abbreviation = models.CharField(max_length=10, null=True, blank=True)
 
@@ -68,12 +61,16 @@ class Project(models.Model):
     kind = models.IntegerField(choices=KINDS) # multiple
     organisation_name = models.CharField(max_length=200, null=True, blank=True)
     categories = models.ManyToManyField(Category)
-    description = models.TextField()
+
+    description_de = models.TextField()
+    description_en = models.TextField(blank = True)
+
+
     area_country = models.CharField(max_length=200, null=True, blank=True)
     area_state = models.CharField(max_length=200, null=True, blank=True) # bundesland
     area_city = models.CharField(max_length=200, null=True, blank=True)
     status = models.IntegerField(choices=STATUS)
-    logo = models.URLField(null=True, blank=True)
+    logo = models.URLField(null=True, blank=True, default=default_logo)
     contact_socialmedia = models.URLField(null=True, blank=True) # comma separated
     contact_telephone = models.CharField(max_length=200, null=True, blank=True) # comma separated
     contact_address_street = models.CharField(max_length=200, null=True, blank=True)
