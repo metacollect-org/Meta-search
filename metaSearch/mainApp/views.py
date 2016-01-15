@@ -13,7 +13,7 @@ from .models import PageLanguage
 
 def index(request):
     project_list = SearchQuerySet().all()[:5]
-
+    
     #orga_list = Project.objects.order_by('title')[:5]
     context = {'project_list': project_list}
     return render(request, 'mainApp/index.html', context)

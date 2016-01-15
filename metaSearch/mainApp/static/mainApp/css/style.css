@@ -1,3 +1,7 @@
-li a {
-    //color: green;
+.header {
+  opacity: 0.7;
+}
+
+h4.content {
+  font-weight: bold;
 }

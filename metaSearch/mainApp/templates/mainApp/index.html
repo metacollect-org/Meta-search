@@ -1,11 +1,13 @@
 {% extends "mainApp/base.html" %}
-
+{% load i18n %}
 {% block content %}
   <form action="" method="GETModel could not be found" class="form-inline">
     <input type="text" name="query" class="form-control" placeholder="Search" id="search" autocomplete="off">
     <button type="button" value="Search" class="btn btn-default">Search</button>
   </form>
-  <small class="hidden"><span class="caret"> </span> more options</small>
+  <div id="filter-area">
+
+  </div>
   <br>
   <div id="search-results"></div>
   <!--<script>
@@ -14,11 +16,19 @@
   })
 </script>-->
 {% if project_list %}
-    <ul id="list">
     {% for project in project_list %}
-        <li><a href="{% url 'detail' project.object.id %}">{{ project.object.title }}</a></li>
+    <div class="row">
+      <div class="col-xs-4">
+        <div class="header">Projectname</div>
+        <h4 class="content"><a href="{% url 'detail' project.object.id %}">{{ project.object.title }}</a></h4>
+      </div>
+      <div class="col-xs-8">
+        <div class="header">Description</div>
+        <p class="content">{{ project.description_de }}</p>
+      </div>
+    </div>
+      <hr>
     {% endfor %}
-    </ul>
 {% else %}
     <p>No Organisations are available.</p>
 {% endif %}
