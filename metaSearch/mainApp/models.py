@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 STATUS = (
     (0, 'Inactive'),
@@ -9,11 +10,12 @@ STATUS = (
 )
 
 KINDS = (
-    (0, 'Website'),
-    (1, 'App'),
-    (2, 'Map'),
-    (3, 'Facebook'),
-    (4, 'Unspecified'),
+    'website',
+    'app',
+    'map',
+    'facebook',
+    'offline',
+    'unspecified',
 )
 
 # Supported languages in the format: ('english name', 'abbreviation', 'alternative names with comma separated')
@@ -34,6 +36,10 @@ LANGUAGES_SUPPORTED = (
     ('tigrinya', 'ti', 'tigrigna, ትግርኛ, tigriññā, tigrinisch'),
     ('tigre', 'tig', 'ትግረ, tigrē, tigrayit, xasa, الخاصية‎, ḫāṣiyah, ትግሬ, ኻሳ'),
     ('french', 'fr', 'le français, français, la langue française, französisch'),
+    ('macedonian', 'mk', 'македонски, македонски јазик, makedonski jazik, mazedonisch'),
+    ('persian', 'fa', 'farsi, فارسی, fārsi, persisch'),
+    ('urdu', 'ur', 'اُردُو‎, urdū, زبان اردو معلہ‎, zabān-i urdū-yi muʿalla, Sprache des gebildeten Hofes'),
+    ('spanish', 'es', 'español, castilian, castellano, spanisch'),
     ('unknown', 'xxx', ''),
 )
 
@@ -56,13 +62,18 @@ LANGUAGES_SUPPORTED = (
 def default_logo():
     return "https://openclipart.org/image/2400px/svg_to_png/201970/refugees-welcome.png"
 
+class Kind(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 class PageLanguage(models.Model):
     name = models.CharField(max_length=200)
     abbreviation = models.CharField(max_length=10)
     alternatives = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name;
+        return self.name
 
 # Create your models here.
 class Category(models.Model):
@@ -80,7 +91,7 @@ class ProgrammingLanguage(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=200)
     url = models.URLField()
-    kind = models.IntegerField(choices=KINDS) # multiple
+    kind = models.ManyToManyField(Kind)
     organisation_name = models.CharField(max_length=200, blank=True, default='')
     categories = models.ManyToManyField(Category)
 
