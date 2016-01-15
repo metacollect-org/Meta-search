@@ -13,10 +13,10 @@
     console.log(json);
   })
 </script>-->
-{% if orga_list %}
+{% if project_list %}
     <ul id="list">
-    {% for orga in orga_list %}
-        <li><a href="{% url 'detail' orga.object.id %}">{{ orga.object.title }}</a></li>
+    {% for project in project_list %}
+        <li><a href="{% url 'detail' project.object.id %}">{{ project.object.title }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

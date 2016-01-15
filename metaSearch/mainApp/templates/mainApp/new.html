@@ -1,0 +1,14 @@
+{% extends "mainApp/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <h3>New Project</h3>
+</div>
+<form>
+  <label for="{{ form.title.id_for_label }}" class="control-label">Project name:</label>
+  {{ form.title }}
+  <hr>
+  {{ form.as_p}}
+  <input type="submit" value="Create" />
+</form>
+{%endblock%}
