@@ -155,8 +155,8 @@ class Command(BaseCommand):
                         print('NEW status FOUND! ' + status)
                     newPro.status = 3
 
-
-                newPro.logo = logo
+                print(models.default_logo())
+                newPro.logo = models.default_logo()
                 newPro.save()
 
                 for singleKind in kind.split(','):
