@@ -16,6 +16,27 @@ KINDS = (
     (4, 'Unspecified'),
 )
 
+# Supported languages in the format: ('english name', 'abbreviation', 'alternative names with comma separated')
+LANGUAGES_SUPPORTED = (
+    ('english', 'en', 'englisch'),
+    ('german', 'de', 'deutsch'),
+    ('polish', 'pl', 'polnisch, język polski, polszczyzna'),
+    ('albanien', 'sq', 'shqip, albanisch'),
+    ('romanian', 'ro', 'română, rumänisch'),
+    ('bulgarian', 'bg', 'български език, bulgarisch'),
+    ('hungarian', 'hu', 'magyar, ungarisch'),
+    ('turkish', 'tr', 'türkçe, türkisch'),
+    ('serbian', 'sr', 'српски, srpski, serbisch'),
+    ('italian', 'it', 'italiano, lingua italiana, italienisch'),
+    ('russian', 'ru', 'ру́сский язы́к, russkiy yazyk, russisch'),
+    ('syriac', 'syc', 'ܠܫܢܐ ܣܘܪܝܝܐ, Leššānā Suryāyā, syrisch'),
+    ('arabic', 'ar', 'العَرَبِية‎, al-ʻarabiyyah, عربى‎, عربي, ʻarabī, arabisch'),
+    ('tigrinya', 'ti', 'tigrigna, ትግርኛ, tigriññā, tigrinisch'),
+    ('tigre', 'tig', 'ትግረ, tigrē, tigrayit, xasa, الخاصية‎, ḫāṣiyah, ትግሬ, ኻሳ'),
+    ('french', 'fr', 'le français, français, la langue française, französisch'),
+    ('unknown', 'xxx', ''),
+)
+
 # English,
 # German,
 
@@ -37,7 +58,8 @@ def default_logo():
 
 class PageLanguage(models.Model):
     name = models.CharField(max_length=200)
-    abbreviation = models.CharField(max_length=10, null=True, blank=True)
+    abbreviation = models.CharField(max_length=10)
+    alternatives = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name;
