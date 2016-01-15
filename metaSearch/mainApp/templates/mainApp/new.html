@@ -1,14 +1,55 @@
 {% extends "mainApp/base.html" %}
-
 {% block content %}
 <div class="page-header">
   <h3>New Project</h3>
 </div>
-<form>
-  <label for="{{ form.title.id_for_label }}" class="control-label">Project name:</label>
-  {{ form.title }}
-  <hr>
-  {{ form.as_p}}
-  <input type="submit" value="Create" />
+{{fields}}
+<div class="jumbotron">
+	<h1>Add a new project</h1>
+</div>
+<form action="" method="post">{% csrf_token %}
+	<p><label for="id_title">Title*:</label><input id="id_title" maxlength="200" name="title" type="text"></p>
+	<p><label for="id_url">Url*:</label> <input id="id_url" maxlength="200" name="url" type="url"></p>
+	<p><label for="id_kind">Kind*:</label> 
+		<select id="id_kind" name="kind">
+			<option value="0">---------</option>
+			<option value="1">Website</option>
+			<option value="2">App</option>
+			<option value="3">Map</option>
+			<option value="4">Facebook</option>
+			<option value="5">Unspecified</option>
+		</select></p>
+	<p><label for="id_categories">Categories*:</label> <select id="id_categories" name="categories">
+	{% for category in selectCategories %}
+	<option value={{category.id}}>{{category.name}}</option>
+	{% endfor %}</select></p>
+	<p><label for="id_language">Language*:</label> <select id="id_language" name="language">
+	{% for language in pageLanguages %}
+	<option value={{language.id}}>{{language.name}}</option>
+	{% endfor %}</select></p>
+	<p><label for="id_description">Description*:</label> <textarea cols="40" id="id_description" name="description" rows="10"></textarea></p>
+		<p><label for="id_status">Status*:</label> <select id="id_status" name="status">
+		<option value="" selected="selected">---------</option>
+		<option value="0">Inactive</option>
+		<option value="1">Active</option>
+		<option value="2">In Progress</option>
+		<option value="3">Unspecified</option>
+	</select></p>
+	<p><label for="id_organisation_name">Organisation name:</label> <input id="id_organisation_name" maxlength="200" name="organisation_name" type="text"></p>
+	<p><label for="id_area_country">Area country:</label> <input id="id_area_country" maxlength="200" name="area_country" type="text"></p>
+	<p><label for="id_area_state">Area state:</label> <input id="id_area_state" maxlength="200" name="area_state" type="text"></p>
+	<p><label for="id_area_city">Area city:</label> <input id="id_area_city" maxlength="200" name="area_city" type="text"></p>
+	<p><label for="id_logo">Logo:</label> <input id="id_logo" maxlength="200" name="logo" type="url"></p>
+	<p><label for="id_contact_socialmedia">Contact socialmedia:</label> <input id="id_contact_socialmedia" maxlength="200" name="contact_socialmedia" type="url"></p>
+	<p><label for="id_contact_telephone">Contact telephone:</label> <input id="id_contact_telephone" maxlength="200" name="contact_telephone" type="text"></p>
+	<p><label for="id_contact_address_street">Contact address street:</label> <input id="id_contact_address_street" maxlength="200" name="contact_address_street" type="text"></p>
+	<p><label for="id_contact_address_housenr">Contact address housenr:</label> <input id="id_contact_address_housenr" maxlength="20" name="contact_address_housenr" type="text"></p>
+	<p><label for="id_contact_address_zip">Contact address zip:</label> <input id="id_contact_address_zip" maxlength="20" name="contact_address_zip" type="text"></p>
+	<p><label for="id_contact_address_city">Contact address city:</label> <input id="id_contact_address_city" maxlength="200" name="contact_address_city" type="text"></p>
+	<p><label for="id_contact_address_country">Contact address country:</label> <input id="id_contact_address_country" maxlength="200" name="contact_address_country" type="text"></p>
+	<p><label for="id_needs">Needs:</label> <input id="id_needs" maxlength="200" name="needs" type="text"></p>
+	
+	<input type="submit" value="Add Project" />
 </form>
 {%endblock%}
+
