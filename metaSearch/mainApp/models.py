@@ -97,13 +97,18 @@ class Project(models.Model):
 
     description_de = models.TextField()
     description_en = models.TextField(blank = True, default='')
+    description_fr = models.TextField(blank = True, default='')
+    description_ar = models.TextField(blank = True, default='')
+
 
     area_country = models.CharField(max_length=200, blank=True, default='')
     area_state = models.CharField(max_length=200, blank=True, default='') # bundesland
     area_city = models.CharField(max_length=200, blank=True, default='')
     status = models.IntegerField(choices=STATUS)
     logo = models.URLField(null=True, blank=True, default=default_logo)
-    contact_socialmedia = models.URLField(null=True, blank=True) # comma separated
+    contact_socialmedia_fb = models.URLField(null=True, blank=True)
+    contact_socialmedia_twitter = models.URLField(null=True, blank=True)
+#    contact_socialmedia = models.URLField(null=True, blank=True) # comma separated
     contact_telephone = models.CharField(max_length=200, blank=True, default='') # comma separated
     contact_address_street = models.CharField(max_length=200, blank=True, default='')
     contact_address_housenr = models.CharField(max_length=20, blank=True, default='')

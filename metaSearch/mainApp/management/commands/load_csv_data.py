@@ -6,43 +6,51 @@ from mainApp import models
 from mainApp.models import Project, Category, ProgrammingLanguage, PageLanguage, Kind
 from django.core.exceptions import ObjectDoesNotExist
 
-# csv table things
-# 0: url
-# 1: title
-# 2: Online/ Offline
-# 3: kind
-# 4: Website
-# 5: App
-# 6: area
-# 7: status
-# 8: description
-# 9: logo
-# 10: hashtags
-# 11: categories
-# 12: orgacontact_name
-# 13: orgacontact_email
-# 14: orgacontact_language
-# 15: contact_email
-# 16: contact_phone
-# 17: contact_socialmedia_fb
-# 18: contact_socialmedia_twitter
-# 19: contact_adress_street
-# 20: contact_adress_housenr
-# 21: contact_adress_postalcode
-# 22: contact_adress_city
-# 23: contact_adress_state
-# 24: contact_adress_country
-# 25: code_repository
-# 26: programming_languages
-# 27: languages
-# 28: organization_type
-# 29: organization_name
-# 30: code_license
-# 31: releasedate
-# 32: entrydate
-# 33: software_development_needs
-# 34: random_generated_key
-
+# 0  id
+# 1  url +
+# 2  title +
+# 3  edited_by/finished
+# 4  organisation_name
+# 5  kind
+# 6  CMS
+# 7  framework
+# 8  responsive
+# 9  mobile
+# 10 mapping
+# 11 status
+# 12 organization_type
+# 13 area_city
+# 14 area_bundesland
+# 15 area_country
+# 16 description_en
+# 17 description_de
+# 18 description_fr
+# 19 description_ar
+# 20 logo
+# 21 hashtags
+# 22 categories
+# 23 orgacontact_name
+# 24 orgacontact_email
+# 25 orgacontact_language
+# 26 contact_email
+# 27 contact_phone
+# 28 contact_socialmedia_fb
+# 29 contact_socialmedia_twitter
+# 30 contact_adress_street
+# 31 contact_adress_housenr
+# 32 contact_adress_postalcode
+# 33 contact_adress_city
+# 34 contact_adress_state
+# 35 contact_adress_country
+# 36 code_repository
+# 37 programming_languages
+# 38 languages
+# 39 code_license
+# 40 releasedate
+# 41 last_update_of_table
+# 42 software_development_needs
+# 43 random_generated_key
+# 44 Flyer
 
 class Command(BaseCommand):
     args = 'No additional Arguments needed'
@@ -78,43 +86,54 @@ class Command(BaseCommand):
         self.init_kinds()
 
         csvReader = csv.reader(getCsvData().split('\n'), delimiter=',')
-        csvReader.__next__() # skip the first row, because these are the column names
-
+        first_line= csvReader.__next__() # skip the first row, because these are the column names
+        print(first_line)
         for row in csvReader:
-            print('roundAgain')
-            if row[1].strip() != '': # only take the ones, that have a name
-                url = row[0]
-                title = row[1]
-                kind = row[3]
-                area = row[6]
-                status = row[7]
-                description = row[8]
-                logo = row[9]
-                hashtags = row[10]
-                categories = row[11]
-                orgacontact_name = row[12]
-                orgacontact_email = row[13]
-                orgacontact_language = row[14]
-                contact_email = row[15]
-                contact_phone = row[16]
-                contact_socialmedia_fb = row[17]
-                contact_socialmedia_twitter = row[18]
-                contact_adress_street = row[19]
-                contact_adress_housenr = row[20]
-                contact_adress_postalcode = row[21]
-                contact_adress_city = row[22]
-                contact_adress_state = row[23]
-                contact_adress_country = row[24]
-                code_repository = row[25]
-                programming_languages = row[26]
-                languages = row[27]
-                organization_type = row[28]
-                organization_name = row[29]
-                code_license = row[30]
-                releasedate = row[31]
-                entrydate = row[32]
-                software_development_needs = row[33]
-                random_generated_key = row[34]
+            if row[2].strip() != '': # only take the ones, that have a name
+                print('loading Project '+ row[2])
+                url = row[1].strip()
+                title = row[2]
+                finished_editing = row[3]
+                organization_name = row[4]
+                kind = row[5]
+                cms = row[6]
+                framework = row[7]
+                responsive = row[8]
+                mobile = row[9]
+                mapping = row[10]
+                status = row[11]
+                organization_type = row[12]
+                area_city = row[13]
+                area_state = row[14]
+                area_country = row[15]
+                description_en = row[16]
+                description_de = row[17]
+                description_fr = row[18]
+                description_ar = row[19]
+                logo = row[20]
+                hashtags = row[21]
+                categories = row[22]
+                orgacontact_name = row[23]
+                orgacontact_email = row[24]
+                orgacontact_language = row[25]
+                contact_email = row[26]
+                contact_phone = row[27]
+                contact_socialmedia_fb = row[28]
+                contact_socialmedia_twitter = row[29]
+                contact_adress_street = row[30]
+                contact_adress_housenr = row[31]
+                contact_adress_postalcode = row[32]
+                contact_adress_city = row[33]
+                contact_adress_state = row[34]
+                contact_adress_country = row[35]
+                code_repository = row[36]
+                programming_languages = row[37]
+                languages = row[38]
+                code_license = row[39]
+                releasedate = row[40]
+                last_update_of_table = row[41]
+                software_development_needs = row[42]
+                flyer = row[44]
 
                 #### Check, if project existent in database, If so, update the
                 #### fields, if not, create it
@@ -130,19 +149,22 @@ class Command(BaseCommand):
 
                 # newPro.title = title
                 newPro.url = url
-                newPro.area_city = area
-                newPro.area_country = contact_adress_country
-                newPro.area_state = contact_adress_state
+                newPro.area_city = area_city
+                newPro.area_country = area_country
+                newPro.area_state = area_state
                 newPro.contact_address_city = contact_adress_city
                 newPro.contact_address_country = contact_adress_country
                 newPro.contact_address_housenr = contact_adress_housenr
                 newPro.contact_address_street = contact_adress_street
                 newPro.contact_address_zip = contact_adress_postalcode
-                newPro.contact_socialmedia = contact_socialmedia_fb
+                newPro.contact_socialmedia_fb = contact_socialmedia_fb
+                newPro.contact_socialmedia_twitter = contact_socialmedia_twitter
                 newPro.contact_telephone = contact_phone
                 newPro.organisation_name = organization_name
-                newPro.description = description
-
+                newPro.description_de = description_de
+                newPro.description_en = description_en
+                newPro.description_fr = description_fr
+                newPro.description_ar = description_ar
 
                 if status.strip().lower() == 'inactive':
                     newPro.status = 0
@@ -155,9 +177,10 @@ class Command(BaseCommand):
                         print('NEW status FOUND! ' + status)
                     newPro.status = 3
 
-                print(models.default_logo())
-                newPro.logo = models.default_logo()
+                print("LOGO: " + logo.strip())
+                newPro.logo = logo.strip() if logo.strip() != '' else models.default_logo()
                 newPro.save()
+                print("newLogo: " + newPro.logo)
 
                 for singleKind in kind.split(','):
                     if singleKind.strip() == '':
@@ -179,7 +202,6 @@ class Command(BaseCommand):
                     if language.strip() == '':
                         continue
                     langFromDb = None
-                    print('LANGUAGE: ' + language)
                     try:
                         langFromDb = PageLanguage.objects.get(name=language.strip)
                     except ObjectDoesNotExist:
@@ -241,7 +263,7 @@ class Command(BaseCommand):
 
 
 def getCsvData():
-   response = requests.get('https://docs.google.com/spreadsheet/ccc?key=102ZqoXXyzAJGD4SVEgbFaxvh4RvWvOfTMsYeLU8KYpY&output=csv')
+   response = requests.get('https://docs.google.com/spreadsheets/d/1L9huhE5AFTwjurwd_dGBasU9Qe0g8gFSmpiMrggxEKA/pub?gid=1986004337&single=true&output=csv')
    assert response.status_code == 200, 'Wrong status code'
    return response.content.decode('utf-8')
    #with open("output.cvs", "w") as text_file:
