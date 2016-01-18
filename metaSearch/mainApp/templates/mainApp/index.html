@@ -1,9 +1,9 @@
 {% extends "mainApp/base.html" %}
 {% load i18n %}
 {% block content %}
-  <form action="" method="GETModel could not be found" class="form-inline">
+  <form action="/mainApp/search/fulltext" method="GET" class="form-inline">
     <input type="text" name="query" class="form-control" placeholder="Search" id="search" autocomplete="off">
-    <button type="button" value="Search" class="btn btn-default">Search</button>
+    <button type="submit" value="Search" class="btn btn-default">Search</button>
   </form>
   <div id="filter-area">
 

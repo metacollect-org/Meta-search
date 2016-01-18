@@ -2,6 +2,7 @@ from django.http import Http404
 from django.utils import translation
 from django.shortcuts import render
 from haystack.query import SearchQuerySet
+from haystack.inputs import AutoQuery
 from django.shortcuts import render_to_response
 from django.views import generic
 from haystack.forms import SearchForm
@@ -10,9 +11,11 @@ from .haystackUtil import HayStackUtilities
 from .models import Project
 from .models import Category
 from .models import PageLanguage
+import random
 
 def index(request):
-    project_list = SearchQuerySet().all()[:5]
+    all_results = SearchQuerySet().all()
+    project_list = [all_results[random.randint(0, all_results.count()-1)] for x in range(0,5)]
     context = {'project_list': HayStackUtilities.unwrapResult(project_list)}
     return render(request, 'mainApp/index.html', context)
 
@@ -32,9 +35,21 @@ def detail(request, project_id):
         raise Http404("Project does not exist")
     return render(request, 'mainApp/detail.html', {'project': project, 'desc': desc})
 
+def search_fulltext(request):
+    print("HALLOO")
+    print(request.GET)
+    project_list = SearchQuerySet().filter(content=AutoQuery(request.GET.get('query','')))
+    context = {'project_list': HayStackUtilities.unwrapResult(project_list)}
+    return render(request, 'mainApp/index.html', context)
+
+
 def search_titles(request):
-    projects = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))
-    projects = HayStackUtilities.unwrapResult(projects)
+    print(request.GET.get('q'))
+    projects = None
+    if request.GET.get('q') != '' :
+        projects = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))
+        projects = HayStackUtilities.unwrapResult(projects)
+
     return render_to_response('mainApp/ajax_search.html', {'projects':projects})
 
 

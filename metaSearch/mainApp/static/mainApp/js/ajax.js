@@ -4,7 +4,7 @@ $(function(){
 
         $.ajax({
             type: "GET",
-            url: "/mainApp/search/",
+            url: "/mainApp/search/autocomplete/",
             data: {
                 'q' : $('#search').val()
             },
