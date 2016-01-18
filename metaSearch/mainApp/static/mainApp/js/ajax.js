@@ -18,5 +18,6 @@ $(function(){
 
 function searchSuccess(data, textStatus, jqXHR)
 {
+    //$('#search-results').html('')
     $('#search-results').html(data);
 }

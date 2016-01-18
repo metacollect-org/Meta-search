@@ -6,16 +6,14 @@ from django.shortcuts import render_to_response
 from django.views import generic
 from haystack.forms import SearchForm
 from django.core.urlresolvers import reverse
-
+from .haystackUtil import HayStackUtilities
 from .models import Project
 from .models import Category
 from .models import PageLanguage
 
 def index(request):
     project_list = SearchQuerySet().all()[:5]
-    
-    #orga_list = Project.objects.order_by('title')[:5]
-    context = {'project_list': project_list}
+    context = {'project_list': HayStackUtilities.unwrapResult(project_list)}
     return render(request, 'mainApp/index.html', context)
 
 def detail(request, project_id):
@@ -36,10 +34,16 @@ def detail(request, project_id):
 
 def search_titles(request):
     projects = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))
+    projects = HayStackUtilities.unwrapResult(projects)
     return render_to_response('mainApp/ajax_search.html', {'projects':projects})
 
 
 class ProjectNewView(generic.edit.CreateView):
     model = Project
-    fields = [f.name for f in Project._meta.get_fields()]
+    fields = [] # Excluding updated_at and created_at as the property 'auto_now_add=True' makes them read-only, resulting in an error when adding them to this form.
+    for f in Project._meta.get_fields():
+        if f.name != 'updated_at' and f.name != 'created_at':
+            fields.append(f.name)
+
+    #fields = [f.name for f in Project._meta.get_fields()]
     template_name = 'mainApp/new.html'
