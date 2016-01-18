@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'haystack',
     'mainApp',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -126,3 +127,7 @@ USE_X_FORWARDED_HOST = True
 ALLOWED_HOSTS = [
   'django.dsini20.schedar.uberspace.de/'
 ]
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 10
+}
+

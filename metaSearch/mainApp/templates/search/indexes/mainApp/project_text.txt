@@ -1,6 +1,7 @@
 {{object.title}}
-{{object.description}}
+{{object.description_de}}
+{{object.description_en}}
 {{object.area_country}}
 {{object.area_city}}
 {{object.area_state}}
-{{object.needs}}
+{{object.categories}}

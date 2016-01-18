@@ -2,3 +2,4 @@ django==1.8
 django-haystack
 elasticsearch
 requests
+djangorestframework

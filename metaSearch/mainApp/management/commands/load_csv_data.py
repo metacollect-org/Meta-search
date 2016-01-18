@@ -230,7 +230,7 @@ class Command(BaseCommand):
                             try:
                                 cat = Category.objects.get(name=currentCat.strip().lower())
                             except ObjectDoesNotExist:
-                                cat = Category(name=currentCat)
+                                cat = Category(name=currentCat.strip().lower())
                                 cat.save()
                             newPro.categories.add(cat)
 
