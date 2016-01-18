@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 import requests
-# import StringIO
 import csv
 from mainApp import models
 from mainApp.models import Project, Category, ProgrammingLanguage, PageLanguage, Kind
@@ -90,7 +89,7 @@ class Command(BaseCommand):
         print(first_line)
         for row in csvReader:
             if row[2].strip() != '': # only take the ones, that have a name
-                print('loading Project '+ row[2])
+                print('loading Project: '+ row[2])
                 url = row[1].strip()
                 title = row[2]
                 finished_editing = row[3]
@@ -143,11 +142,6 @@ class Command(BaseCommand):
                 except ObjectDoesNotExist:
                     newPro = Project(title=title)
 
-
-
-
-
-                # newPro.title = title
                 newPro.url = url
                 newPro.area_city = area_city
                 newPro.area_country = area_country
@@ -177,10 +171,8 @@ class Command(BaseCommand):
                         print('NEW status FOUND! ' + status)
                     newPro.status = 3
 
-                print("LOGO: " + logo.strip())
                 newPro.logo = logo.strip() if logo.strip() != '' else models.default_logo()
                 newPro.save()
-                print("newLogo: " + newPro.logo)
 
                 for singleKind in kind.split(','):
                     if singleKind.strip() == '':
@@ -216,13 +208,6 @@ class Command(BaseCommand):
 
                     newPro.languages.add(langFromDb)
 
-                # if languages.strip().lower().find('english') > -1:
-                #     newPro.languages = 0
-                # elif languages.strip().lower().find('german') > -1:
-                #     newPro.languages = 1
-                # else:
-                #     newPro.languages = 11
-                #
                 newPro.needs = software_development_needs
 
                 programming_languages = programming_languages.strip().lower()
@@ -237,9 +222,6 @@ class Command(BaseCommand):
                             dbPlang.save()
                         newPro.programming_languages.add(dbPlang)
 
-
-
-
                 catList = categories.split(',')
                 if len(catList) > 1:
                     for currentCat in catList:
@@ -252,13 +234,7 @@ class Command(BaseCommand):
                                 cat.save()
                             newPro.categories.add(cat)
 
-
                 newPro.save()
-
-
-
-
-
 
 
 
