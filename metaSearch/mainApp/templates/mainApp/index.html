@@ -26,8 +26,13 @@
       <div class="col-xs-8">
         <div class="header">Description</div>
         <img class="media-object" src="{{project.logo}}" alt="Logo placeholder" style="max-height:100px; max-width:100px;">
-
+        {% if project.description_de %}
         <p class="content">{{ project.description_de }}</p>
+        {% elif project.description_en %}
+        <p class="content">{{ project.description_de }}</p>
+        {% else %}
+        <p class="content">{% trans "No description available" %}</p>
+        {% endif %}
       </div>
     </div>
       <hr>
