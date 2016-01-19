@@ -46,8 +46,8 @@ def search_fulltext(request):
 def search_titles(request):
     print(request.GET.get('q'))
     projects = None
-    if request.GET.get('q') != '' :
-        projects = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))
+    if len(request.GET.get('q')) > 3:
+        projects = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
         projects = HayStackUtilities.unwrapResult(projects)
 
     return render_to_response('mainApp/ajax_search.html', {'projects':projects})
