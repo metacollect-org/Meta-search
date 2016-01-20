@@ -8,15 +8,20 @@ from django.views import generic
 from haystack.forms import SearchForm
 from django.core.urlresolvers import reverse
 from .haystackUtil import HayStackUtilities
+from mainApp.haystackUtil import SearchQuerySetWrapper
 from .models import Project
 from .models import Category
 from .models import PageLanguage
 import random
 
+def queryset_gen(search_qs):
+    for item in search_qs:
+        yield item.objects
+
 def index(request):
-    all_results = SearchQuerySet().all()
+    all_results = SearchQuerySetWrapper(SearchQuerySet().all())
     project_list = [all_results[random.randint(0, all_results.count()-1)] for x in range(0,5)]
-    context = {'project_list': HayStackUtilities.unwrapResult(project_list)}
+    context = {'project_list': project_list}
     return render(request, 'mainApp/index.html', context)
 
 def detail(request, project_id):
@@ -36,10 +41,9 @@ def detail(request, project_id):
     return render(request, 'mainApp/detail.html', {'project': project, 'desc': desc})
 
 def search_fulltext(request):
-    print("HALLOO")
-    print(request.GET)
     project_list = SearchQuerySet().filter(content=AutoQuery(request.GET.get('query','')))
-    context = {'project_list': HayStackUtilities.unwrapResult(project_list)}
+    project_list = SearchQuerySetWrapper(project_list)
+    context = {'project_list': project_list}
     return render(request, 'mainApp/index.html', context)
 
 
@@ -48,7 +52,7 @@ def search_titles(request):
     projects = None
     if len(request.GET.get('q')) > 3:
         projects = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
-        projects = HayStackUtilities.unwrapResult(projects)
+        projects = SearchQuerySetWrapper(projects)
 
     return render_to_response('mainApp/ajax_search.html', {'projects':projects})
 

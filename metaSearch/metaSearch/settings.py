@@ -128,6 +128,14 @@ ALLOWED_HOSTS = [
   'django.dsini20.schedar.uberspace.de/'
 ]
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework.renderers.JSONRenderer',
+            # 'rest_framework.renderers.BrowsableAPIRenderer',
+            'rest_framework_xml.renderers.XMLRenderer',
+            'rest_framework_yaml.renderers.YAMLRenderer',
+        ),
+
 }
 
