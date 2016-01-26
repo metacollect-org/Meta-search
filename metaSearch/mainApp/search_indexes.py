@@ -4,8 +4,13 @@ from mainApp.models import Project
 
 class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    content_auto = indexes.EdgeNgramField(model_attr='title')
-#pub_date = indexes.DateTimeField(model_attr='pub_date')
+    area_city = indexes.CharField()
+    categoryName = indexes.CharField()
+    #content_auto = indexes.EdgeNgramField(model_attr='title')
+    #pub_date = indexes.DateTimeField(model_attr='pub_date')
+
+    def prepare_categoryName(self, object):
+        return [category.name for category in object.categories.all()]
 
     def get_model(self):
         return Project

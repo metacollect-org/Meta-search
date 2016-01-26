@@ -1,6 +1,8 @@
 {% extends "mainApp/base.html" %}
+{% load i18n %}
 
 {% block content %}
+{% load staticfiles %}
 <div class="page-header">
   <script>
   document.write("<button " +
@@ -18,9 +20,99 @@
       </a>
     </div>
     <div class="media-body">
-      <h4 class="media-heading">Description</h4>
+      <h4 class="media-heading">{% trans "Description" %}</h4>
       <p>{{ desc|linebreaks }}</p>
       <p><a href="{{ project.url }}">{{project.url}}</a></p>
+      <p>{{ project.get_categories }}</p>
+      <h4>{% trans "Available in the languages" %}</h4>
+      <p>{{ project.get_page_languages }}</p>
+      <h4>{% trans "Area of operation" %}</h4>
+      <p>{{ project.area_city }} ({{ project.area_state }}), {{ project.area_country }}</p>
+      <h4>{% trans "Contact address" %}</h4>
+      {% if project.has_full_contact %}
+        <p>{{ project.contact_address_street }}, {{project.contact_address_housenr}} in {{project.contact_address_zip}} {{project.contact_address_city}} ({{project.contact_address_country}})</p>
+        <div id="basicMap" class="map"></div>
+        <link rel="stylesheet" href="http://openlayers.org/en/v3.13.0/css/ol.css" type="text/css">
+        <script src="http://openlayers.org/en/v3.13.0/build/ol.js"></script>
+        <script>
+          lonlat = [];
+          $(function () {
+            $.ajax({
+              dataType: "json",
+              url: "http://nominatim.openstreetmap.org/search",
+              type: "GET",
+              mimeType: "json",
+              data: {
+                format: "json",
+                street: "{{project.contact_address_housenr}} {{project.contact_address_street}}",
+                city: "{{project.contact_address_city}}",
+                addressdetails: "1",
+                limit: "1"
+              },
+              success: function(data,textStatus, jqXHR) {
+                lonlat[0] = parseFloat(data[0].lon);
+                lonlat[1] = parseFloat(data[0].lat);
+                showMap();
+              }
+            });
+          });
+
+          function showMap() {
+            var iconFeature = new ol.Feature({
+              geometry: new ol.geom.Point(ol.proj.transform(lonlat, 'EPSG:4326', 'EPSG:900913')),
+              name: '{{project.title}}',
+            });
+
+            //create the style
+            var iconStyle = new ol.style.Style({
+              image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                anchor: [0.5, 46],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                //opacity: 0.75,
+                //src: 'http://openlayers.org/en/v3.9.0/examples/data/icon.png'
+                src: "{% static 'mainApp/fonts/flag.png' %}"
+              }))
+            });
+
+            var vectorSource = new ol.source.Vector({
+              features: [iconFeature]
+            });
+
+            var vectorLayer = new ol.layer.Vector({
+              source: vectorSource,
+              style: iconStyle
+            });
+
+            var map = new ol.Map({
+              layers: [
+                new ol.layer.Tile({
+                  source: new ol.source.OSM()
+                }),
+                vectorLayer
+              ],
+              target: 'basicMap',
+              view: new ol.View({
+                center: ol.proj.transform(lonlat, 'EPSG:4326', 'EPSG:900913'),
+                zoom: 16
+              })
+            });
+          }
+          /*$({
+            map = new OpenLayers.Map("basicMap");
+            var mapnik = new OpenLayers.Layer.OSM();
+            map.addLayer(mapnik);
+            map.setCenter(new OpenLayers.LonLat(13.41,52.52) // Center of the map
+              .transform(
+                new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
+              ), 15 // Zoom level
+            );
+          });*/
+        </script>
+      {% else %}
+        <p>no contact address specified.</p>
+      {% endif %}
     </div>
   </div>
 </div>

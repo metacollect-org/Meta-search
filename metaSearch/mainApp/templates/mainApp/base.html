@@ -15,7 +15,6 @@
   <script type="text/javascript" src="{% static 'mainApp/js/bootstrap.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'mainApp/js/ajax.js' %}"></script>
 
-
   <title>{% block title %}Metabrain{% endblock %}</title>
 </head>
 
@@ -48,15 +47,15 @@
         {% if LANGUAGE_CODE|language_bidi %}
         <ul class="nav navbar-nav navbar-left">
           <li><a href="{% url 'new' %}">{% trans "Register" %}</a></li>
-          <li><a href="#contact">FAQ</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#contact">{% trans "FAQ" %}</a></li>
+          <li><a href="#contact">{% trans "Contact" %}</a></li>
+          <li><a href="#about">{% trans "About" %}</a></li>
         </ul>
         {% else %}
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="#contact">FAQ</a></li>
+          <li><a href="#about">{% trans "About" %}</a></li>
+          <li><a href="#contact">{% trans "Contact" %}</a></li>
+          <li><a href="#contact">{% trans "FAQ" %}</a></li>
           <li><a href="{% url 'new' %}">{% trans "Register" %}</a></li>
         </ul>
         {% endif %}

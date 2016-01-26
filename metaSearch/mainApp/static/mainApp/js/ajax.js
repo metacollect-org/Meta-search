@@ -1,5 +1,5 @@
 $(function(){
-
+/*
     $('#search').keyup(function() {
 
         $.ajax({
@@ -13,7 +13,7 @@ $(function(){
         });
 
     });
-
+*/
 });
 
 function searchSuccess(data, textStatus, jqXHR)

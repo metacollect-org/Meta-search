@@ -2,7 +2,7 @@ from django.http import Http404
 from django.utils import translation
 from django.shortcuts import render
 from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery
+from haystack.inputs import AutoQuery, Clean
 from django.shortcuts import render_to_response
 from django.views import generic
 from haystack.forms import SearchForm
@@ -21,7 +21,10 @@ def queryset_gen(search_qs):
 def index(request):
     all_results = SearchQuerySetWrapper(SearchQuerySet().all())
     project_list = [all_results[random.randint(0, all_results.count()-1)] for x in range(0,5)]
-    context = {'project_list': project_list}
+
+    categories = Category.objects.all().order_by('name')
+
+    context = {'project_list': project_list, 'categories': categories}
     return render(request, 'mainApp/index.html', context)
 
 def detail(request, project_id):
@@ -33,19 +36,26 @@ def detail(request, project_id):
             lang_code = PageLanguage.objects.get(abbreviation=translation.get_language()).abbreviation
         except PageLanguage.DoesNotExist:
             lang_code = 'de'
-        desc = project.get_description(lang_code)
+        desc = project.get_description()
 
-        print(project)
     except Project.DoesNotExist:
         raise Http404("Project does not exist")
     return render(request, 'mainApp/detail.html', {'project': project, 'desc': desc})
 
 def search_fulltext(request):
-    project_list = SearchQuerySet().filter(content=AutoQuery(request.GET.get('query','')))
+    if 'query' in request.GET and request.GET['query'] != '':
+        project_list = SearchQuerySet().filter(text=request.GET.get('query',''))
+        #project_list = SearchQuerySet().filter(categoryName=AutoQuery(request.GET.get('query')))
+        project_list = project_list | SearchQuerySet().filter(categoryName__in=request.GET.get('query').split(' '))
+        #project_list = SearchQuerySetWrapper(project_list)
+    else:
+        project_list = SearchQuerySet().filter(categoryName__in=request.GET.getlist('category'))
+        #project_list = Project.objects.filter(categories__in=request.GET.getlist('category'))
+
+    #project_list = project_list.filter(categories__in=request.GET.getlist('category'))
     project_list = SearchQuerySetWrapper(project_list)
     context = {'project_list': project_list}
     return render(request, 'mainApp/index.html', context)
-
 
 def search_titles(request):
     print(request.GET.get('q'))

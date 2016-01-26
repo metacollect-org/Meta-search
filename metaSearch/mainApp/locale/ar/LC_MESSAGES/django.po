@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-01 10:32+0100\n"
+"POT-Creation-Date: 2016-01-26 18:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,58 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: templates/mainApp/base.html:50
+#: models.py:140 templates/mainApp/index.html:40
+msgid "No description available"
+msgstr "لا يوجد وصف متاح"
+
+#: models.py:145
+msgid "Translations are not known"
+msgstr "ليست معروفة ترجمات"
+
+#: models.py:153
+msgid "Belongs to no categories"
+msgstr "لا ينتمي إلى أي فئة"
+
+#: templates/mainApp/base.html:49 templates/mainApp/base.html.py:59
 msgid "Register"
 msgstr "تسجيل"
+
+#: templates/mainApp/base.html:50 templates/mainApp/base.html.py:58
+msgid "FAQ"
+msgstr "التعليمات"
+
+#: templates/mainApp/base.html:51 templates/mainApp/base.html.py:57
+msgid "Contact"
+msgstr "الشخص الذي يمكن الاتصال به"
+
+#: templates/mainApp/base.html:52 templates/mainApp/base.html.py:56
+msgid "About"
+msgstr "معلومات عنا"
+
+#: templates/mainApp/detail.html:22 templates/mainApp/index.html:31
+msgid "Description"
+msgstr "الوصف"
+
+#: templates/mainApp/detail.html:26
+msgid "Available in the languages"
+msgstr "متوفر في اللغات التالية"
+
+#: templates/mainApp/detail.html:28
+msgid "Area of operation"
+msgstr "منطقة العمليات"
+
+#: templates/mainApp/detail.html:30
+msgid "Contact address"
+msgstr "عنوان الإتصال"
+
+#: templates/mainApp/index.html:7
+msgid "Search"
+msgstr "بحث"
+
+#: templates/mainApp/index.html:24
+msgid "Projectname"
+msgstr "اسم"
+
+#: templates/mainApp/index.html:26
+msgid "Categories"
+msgstr "فئة"

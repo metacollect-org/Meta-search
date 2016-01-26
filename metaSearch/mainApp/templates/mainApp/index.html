@@ -1,38 +1,45 @@
 {% extends "mainApp/base.html" %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 {% block content %}
-  <form action="/mainApp/search/fulltext" method="GET" class="form-inline">
-    <input type="text" name="query" class="form-control" placeholder="Search" id="search" autocomplete="off">
-    <button type="submit" value="Search" class="btn btn-default">Search</button>
+  <form action="/mainApp/search/fulltext" method="GET" class="form-inline"> {% csrf_token %}
+    <input type="text" name="query" class="form-control" id="search" autocomplete="off">
+    <button type="submit" value="Search" class="btn btn-default">{% trans "Search" %}</button>
+    <div id="filter-area">
+      {% for cat in categories %}
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="category" value="{{cat.name}}"> {{cat.name}}
+          </label>
+        </div>
+      {% endfor %}
+    </div>
   </form>
-  <div id="filter-area">
-
-  </div>
   <br>
   <div id="search-results"></div>
-  <!--<script>
-  $.getJSON("http://meta.refugeehelper.net/api/projects", function(json) {
-    console.log(json);
-  })
-</script>-->
 {% if project_list %}
     {% for project in project_list %}
     <div class="row">
       <div class="col-xs-4">
-        <div class="header">Projectname</div>
+        <div class="header">{% trans "Projectname" %}</div>
         <h4 class="content"><a href="{% url 'detail' project.id %}">{{ project.title }}</a></h4>
+        <div class="header">{% trans "Categories" %}</div>
+        <p>{{ project.get_categories }}</p>
       </div>
 
       <div class="col-xs-8">
-        <div class="header">Description</div>
+        <div class="header">{% trans "Description" %}</div>
         <img class="media-object" src="{{project.logo}}" alt="Logo placeholder" style="max-height:100px; max-width:100px;">
+        <p class="content">{{ project.get_description }}</p>
+        <!--
         {% if project.description_de %}
         <p class="content">{{ project.description_de }}</p>
         {% elif project.description_en %}
-        <p class="content">{{ project.description_de }}</p>
+        <p class="content">{{ project.description_en }}</p>
         {% else %}
         <p class="content">{% trans "No description available" %}</p>
         {% endif %}
+        -->
       </div>
     </div>
       <hr>

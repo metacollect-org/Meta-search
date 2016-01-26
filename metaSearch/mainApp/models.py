@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.utils import translation
+from django.utils.translation import ugettext_lazy as _
 
 STATUS = (
     (0, 'Inactive'),
@@ -125,10 +127,35 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
-    def get_description(self, lang_code):
+    def has_full_contact(self):
+        return (self.contact_address_housenr != '' and self.contact_address_street != '' and (self.contact_address_city != '' or self.contact_address_zip != ''))
+
+    def get_description(self):
+        lang_code = translation.get_language()
         if not getattr(self, 'description_'+lang_code):
-            return getattr(self, 'description_de')
+            if getattr(self, 'description_de'):
+                return getattr(self, 'description_de')
+            elif getattr(self, 'description_en'):
+                return getattr(self, 'description_en')
+            else:
+                return _('No description available')
         return getattr(self, 'description_'+lang_code)
+
+    def get_page_languages(self):
+        if not self.languages.all():
+            return _('Translations are not known')
+        output = ''
+        for lang in self.languages.all():
+            output += lang.name + '; '
+        return output
+
+    def get_categories(self):
+        if not self.categories.all():
+            return _('Belongs to no categories')
+        output = ''
+        for cat in self.categories.all():
+            output += cat.name + '; '
+        return output
 
     def is_online(self):
         return self.status==1
