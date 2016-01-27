@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 import requests
 import csv
 from mainApp import models
-from mainApp.models import Project, Category, ProgrammingLanguage, PageLanguage, Kind
+from mainApp.models import Project, Category, ProgrammingLanguage, PageLanguage, Kind, GeoLocation
 from django.core.exceptions import ObjectDoesNotExist
 
 # 0  id
@@ -50,6 +50,15 @@ from django.core.exceptions import ObjectDoesNotExist
 # 42 software_development_needs
 # 43 random_generated_key
 # 44 Flyer
+
+def getGeoLocation(area_city):
+   if area_city is None:
+      return 0, 0
+   if len(area_city) == 0:
+      return 0, 0
+   # TODO implement logic here
+   return 0, 0
+
 
 class Command(BaseCommand):
     args = 'No additional Arguments needed'
@@ -146,6 +155,13 @@ class Command(BaseCommand):
                 newPro.area_city = area_city
                 newPro.area_country = area_country
                 newPro.area_state = area_state
+
+                try:
+                    newPro.geo_location = GeoLocation.objects.get(name=area_city)
+                except ObjectDoesNotExist:
+                   lat, lon = getGeoLocation(area_city)
+                   newPro.geo_location = GeoLocation(lat=lat, lon=lon, name=area_city)
+
                 newPro.contact_address_city = contact_adress_city
                 newPro.contact_address_country = contact_adress_country
                 newPro.contact_address_housenr = contact_adress_housenr
