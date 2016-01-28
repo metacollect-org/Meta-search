@@ -84,6 +84,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+# Create your models here.
+class GeoLocation(models.Model):
+    name = models.CharField(max_length=200)
+    lat = models.FloatField()
+    lon = models.FloatField()
+    def __str__(self):
+        return str([self.lat, self.lon])
+
 class ProgrammingLanguage(models.Model):
     name = models.CharField(max_length=30)
 
@@ -106,6 +114,7 @@ class Project(models.Model):
     area_country = models.CharField(max_length=200, blank=True, default='')
     area_state = models.CharField(max_length=200, blank=True, default='') # bundesland
     area_city = models.CharField(max_length=200, blank=True, default='')
+    geo_location = models.ManyToManyField(GeoLocation, blank=True)
     status = models.IntegerField(choices=STATUS)
     logo = models.URLField(null=True, blank=True, default=default_logo)
     contact_socialmedia_fb = models.URLField(null=True, blank=True)
