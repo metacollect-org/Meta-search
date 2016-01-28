@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.gis.geos import Point
+from haystack.utils.geo import Point
 
 DEFAULT_GEO_LOC = (51.0834196, 10.4234469, 'Germany')  # Center of Germany
 
