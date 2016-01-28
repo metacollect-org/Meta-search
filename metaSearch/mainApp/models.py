@@ -3,7 +3,6 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
-from haystack.utils.geo import Point
 
 DEFAULT_GEO_LOC = (51.0834196, 10.4234469, 'Germany')  # Center of Germany
 
@@ -174,8 +173,8 @@ class Project(models.Model):
     def get_location(self):
         # Remember, longitude FIRST!
         if self.geo_location is None:
-            return Point(DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1])
-        return Point(self.geo_location.lon, self.geo_location.lat)
+            return "%s,%s" % (DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[0])
+        return "%s,%s" % (self.geo_location.lat, self.geo_location.lon)
 
     def get_location_address(self):
         if self.geo_location is None:
