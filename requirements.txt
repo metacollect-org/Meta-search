@@ -3,3 +3,6 @@ django-haystack
 elasticsearch
 requests
 djangorestframework
+geopy
+djangorestframework-xml
+djangorestframework-yaml
