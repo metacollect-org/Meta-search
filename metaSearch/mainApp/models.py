@@ -3,6 +3,9 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.gis.geos import Point
+
+DEFAULT_GEO_LOC = (51.0834196, 10.4234469, 'Germany')  # Center of Germany
 
 STATUS = (
     (0, 'Inactive'),
@@ -93,6 +96,7 @@ class GeoLocation(models.Model):
     def __str__(self):
         return str([self.lat, self.lon])
 
+
 class ProgrammingLanguage(models.Model):
     name = models.CharField(max_length=30)
 
@@ -167,5 +171,16 @@ class Project(models.Model):
             output += cat.name + '; '
         return output
 
+    def get_location(self):
+        # Remember, longitude FIRST!
+        if self.geo_location is None:
+            return Point(DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1])
+        return Point(self.geo_location.lon, self.geo_location.lat)
+
+    def get_location_address(self):
+        if self.geo_location is None:
+            return DEFAULT_GEO_LOC[2]
+        return self.geo_location.address
+
     def is_online(self):
-        return self.status==1
+        return self.status == 1

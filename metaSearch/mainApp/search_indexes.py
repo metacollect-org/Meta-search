@@ -9,6 +9,8 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
 
     content_auto = indexes.EdgeNgramField(model_attr='title')
     #pub_date = indexes.DateTimeField(model_attr='pub_date')
+    geo_location = indexes.LocationField(model_attr='get_location')
+    geo_location_address = indexes.CharField(model_attr='get_location_address')
 
     def prepare_categoryName(self, object):
         return [category.name for category in object.categories.all()]
