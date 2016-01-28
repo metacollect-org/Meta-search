@@ -4,6 +4,12 @@ import csv
 from mainApp import models
 from mainApp.models import Project, Category, ProgrammingLanguage, PageLanguage, Kind, GeoLocation
 from django.core.exceptions import ObjectDoesNotExist
+from geopy.geocoders import Nominatim
+import time
+
+WAIT_TIME_GEO_REQUESTS = 2  # in seconds
+DEFAULT_GEO_LOC = (51.0834196, 10.4234469, 'Germany')  # Center of Germany
+LOAD_GEO_LOCATIONS = True
 
 # 0  id
 # 1  url +
@@ -51,13 +57,18 @@ from django.core.exceptions import ObjectDoesNotExist
 # 43 random_generated_key
 # 44 Flyer
 
+geolocator = Nominatim()
+
 def getGeoLocation(area_city):
    if area_city is None:
-      return 0, 0
+      return DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[2]
    if len(area_city) == 0:
-      return 0, 0
-   # TODO implement logic here
-   return 0, 0
+      return DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[2]
+   time.sleep(WAIT_TIME_GEO_REQUESTS)
+   location = geolocator.geocode(area_city)
+   print('new location found')
+   print(location.raw)
+   return location.latitude, location.longitude, location.address
 
 
 class Command(BaseCommand):
@@ -156,11 +167,20 @@ class Command(BaseCommand):
                 newPro.area_country = area_country
                 newPro.area_state = area_state
 
-                try:
-                    newPro.geo_location = GeoLocation.objects.get(name=area_city)
-                except ObjectDoesNotExist:
-                   lat, lon = getGeoLocation(area_city)
-                   newPro.geo_location = GeoLocation(lat=lat, lon=lon, name=area_city)
+                if (LOAD_GEO_LOCATIONS):
+                    for area in [area_city, area_country, area_state]:
+                        if area is None:
+                            continue
+                        if len(area) == 0:
+                            continue
+                        try:
+                            newPro.geo_location = GeoLocation.objects.get(name=area)
+                        except ObjectDoesNotExist:
+                            lat, lon, address = getGeoLocation(area)
+                            new_location = GeoLocation(lat=lat, lon=lon, address=address, name=area)
+                            new_location.save()
+                            newPro.geo_location = new_location
+                        break
 
                 newPro.contact_address_city = contact_adress_city
                 newPro.contact_address_country = contact_adress_country
@@ -178,7 +198,7 @@ class Command(BaseCommand):
 
                 if status.strip().lower() == 'inactive':
                     newPro.status = 0
-                elif status.strip().lower()== 'active' or status.strip().lower()== 'läuft':
+                elif status.strip().lower() == 'active' or status.strip().lower() == 'läuft':
                     newPro.status = 1
                 elif status.strip().lower() == 'in progress':
                     newPro.status = 2
