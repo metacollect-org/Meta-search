@@ -6,7 +6,8 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     area_city = indexes.CharField()
     categoryName = indexes.CharField()
-    #content_auto = indexes.EdgeNgramField(model_attr='title')
+
+    content_auto = indexes.EdgeNgramField(model_attr='title')
     #pub_date = indexes.DateTimeField(model_attr='pub_date')
 
     def prepare_categoryName(self, object):

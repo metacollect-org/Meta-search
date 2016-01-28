@@ -44,7 +44,8 @@ def detail(request, project_id):
 
 def search_fulltext(request):
     if 'query' in request.GET and request.GET['query'] != '':
-        project_list = SearchQuerySet().filter(text=request.GET.get('query',''))
+        project_list = SearchQuerySet().filter(text__startswith=request.GET.get('query',''))
+        #project_list = SearchQuerySet().autocomplete(content_auto=request.GET.get('query',''))
         #project_list = SearchQuerySet().filter(categoryName=AutoQuery(request.GET.get('query')))
         project_list = project_list | SearchQuerySet().filter(categoryName__in=request.GET.get('query').split(' '))
         #project_list = SearchQuerySetWrapper(project_list)
