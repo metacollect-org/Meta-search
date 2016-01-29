@@ -12,19 +12,7 @@ class GeoField(LocationField):
         return obj
 
     def convert(self, value):
-        if value is None:
-            return None
-
-        if isinstance(value, six.string_types):
-            lat, lng = value.split(',')
-        elif isinstance(value, (list, tuple)):
-            # GeoJSON-alike
-            lat, lng = value[1], value[0]
-        elif isinstance(value, dict):
-            lat = value.get('lat', 0)
-            lng = value.get('lon', 0)
-
-        return "%s,%s" % (value.lat, value.lon)
+        return value
 
 class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
