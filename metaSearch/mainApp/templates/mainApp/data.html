@@ -1,0 +1,13 @@
+{% extends "mainApp/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <h3>Data</h3>
+</div>
+
+<iframe src="http://localhost:61616/#/visualize/edit/Germany-geolocs?embed&_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:'*')),vis:(aggs:!((id:'1',params:(),schema:metric,type:count),(id:'2',params:(autoPrecision:!t,field:location,mapCenter:!(50.729501501474324,10.7666015625),mapZoom:6,precision:4),schema:segment,type:geohash_grid)),listeners:(),params:(addTooltip:!t,heatBlur:'16',heatMaxZoom:'13',heatMinOpacity:'0.23',heatNormalizeData:!t,heatRadius:'19',isDesaturated:!t,mapType:'Shaded%20Circle%20Markers'),type:tile_map))&_g=()" height="600" width="800"></iframe>
+
+<iframe src="http://localhost:61616/#/visualize/edit/category_distribution?embed&_g=()&_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:'*')),vis:(aggs:!((id:'1',params:(),schema:metric,type:count),(id:'2',params:(field:categoryName,size:20),schema:segment,type:significant_terms)),listeners:(),params:(addLegend:!t,addTooltip:!t,isDonut:!f,shareYAxis:!t),type:pie))" height="600" width="800"></iframe>
+
+<iframe src="http://localhost:61616/#/visualize/edit/lang_distribution?embed&_g=()&_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:'*')),vis:(aggs:!((id:'1',params:(),schema:metric,type:count),(id:'2',params:(field:languages,order:desc,orderBy:'1',size:10),schema:segment,type:terms)),listeners:(),params:(addLegend:!t,addTooltip:!t,isDonut:!f,shareYAxis:!t),type:pie))" height="600" width="800"></iframe>
+{%endblock%}
