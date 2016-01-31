@@ -34,6 +34,10 @@ msgstr "Gehört keiner Kategorie an"
 msgid "Register"
 msgstr "Registrieren"
 
+#: templates/mainApp/base.html:49 templates/mainApp/base.html.py:59
+msgid "Data"
+msgstr "Data"
+
 #: templates/mainApp/base.html:50 templates/mainApp/base.html.py:58
 msgid "FAQ"
 msgstr "FAQ"
