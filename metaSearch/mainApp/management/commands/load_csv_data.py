@@ -4,12 +4,7 @@ import csv
 from mainApp import models
 from mainApp.models import Project, Category, ProgrammingLanguage, PageLanguage, Kind, GeoLocation
 from django.core.exceptions import ObjectDoesNotExist
-from geopy.geocoders import Nominatim
-import time
 
-from mainApp.models import DEFAULT_GEO_LOC
-WAIT_TIME_GEO_REQUESTS = 2  # in seconds, ABSOLUTE MIN IS 1 SECOND
-LOAD_GEO_LOCATIONS = True
 
 # 0  id
 # 1  url +
@@ -57,19 +52,7 @@ LOAD_GEO_LOCATIONS = True
 # 43 random_generated_key
 # 44 Flyer
 
-geolocator = Nominatim()
 
-def getGeoLocation(area_city):
-   if area_city is None:
-      return DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[2]
-   if len(area_city) == 0:
-      return DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[2]
-   time.sleep(WAIT_TIME_GEO_REQUESTS)
-   location = geolocator.geocode(area_city)
-   if location is None:
-       return DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[2]
-   print('new location found: '+location.address)
-   return location.latitude, location.longitude, location.address
 
 
 class Command(BaseCommand):
@@ -168,21 +151,6 @@ class Command(BaseCommand):
                 newPro.area_country = area_country
                 newPro.area_state = area_state
 
-                if (LOAD_GEO_LOCATIONS):
-                    for area in [area_city, area_country, area_state, DEFAULT_GEO_LOC[2]]:
-                        if area is None:
-                            continue
-                        if len(area) == 0:
-                            continue
-                        try:
-                            newPro.geo_location = GeoLocation.objects.get(name=area)
-                        except ObjectDoesNotExist:
-                            lat, lon, address = getGeoLocation(area)
-                            new_location = GeoLocation(lat=lat, lon=lon, address=address, name=area)
-                            new_location.save()
-                            newPro.geo_location = new_location
-                        break
-
                 newPro.contact_address_city = contact_adress_city
                 newPro.contact_address_country = contact_adress_country
                 newPro.contact_address_housenr = contact_adress_housenr
@@ -191,6 +159,7 @@ class Command(BaseCommand):
                 newPro.contact_socialmedia_fb = contact_socialmedia_fb
                 newPro.contact_socialmedia_twitter = contact_socialmedia_twitter
                 newPro.contact_telephone = contact_phone
+
                 newPro.organisation_name = organization_name
                 newPro.description_de = description_de
                 newPro.description_en = description_en

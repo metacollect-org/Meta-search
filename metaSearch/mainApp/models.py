@@ -1,9 +1,15 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import pre_save
+from geopy.geocoders import Nominatim
+import time
 
+WAIT_TIME_GEO_REQUESTS = 2  # in seconds, ABSOLUTE MIN IS 1 SECOND
+LOAD_GEO_LOCATIONS = True
 DEFAULT_GEO_LOC = (51.0834196, 10.4234469, 'Germany')  # Center of Germany
 
 STATUS = (
@@ -63,14 +69,18 @@ LANGUAGES_SUPPORTED = (
 # Irak
 # Eritrea
 
+
 def default_logo():
     return "https://openclipart.org/image/2400px/svg_to_png/201970/refugees-welcome.png"
+
 
 class Kind(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
+
+
 class PageLanguage(models.Model):
     name = models.CharField(max_length=200)
     abbreviation = models.CharField(max_length=10)
@@ -79,12 +89,14 @@ class PageLanguage(models.Model):
     def __str__(self):
         return self.name
 
+
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=200)
     parent = models.ForeignKey('self', null=True, blank=True)
     def __str__(self):
         return self.name
+
 
 # Create your models here.
 class GeoLocation(models.Model):
@@ -101,6 +113,7 @@ class ProgrammingLanguage(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
@@ -130,6 +143,7 @@ class Project(models.Model):
     contact_address_zip = models.CharField(max_length=20, blank=True, default='')
     contact_address_city = models.CharField(max_length=200, blank=True, default='')
     contact_address_country = models.CharField(max_length=200, blank=True, default='')
+    contact_loc = models.ForeignKey(GeoLocation, blank=True, null=True, related_name='contact_location')
     languages = models.ManyToManyField(PageLanguage) # multiple
     needs = models.CharField(max_length=200, blank=True, default='') # optional
     programming_languages = models.ManyToManyField(ProgrammingLanguage, blank=True)
@@ -141,7 +155,9 @@ class Project(models.Model):
         return self.title
 
     def has_full_contact(self):
-        return (self.contact_address_housenr != '' and self.contact_address_street != '' and (self.contact_address_city != '' or self.contact_address_zip != ''))
+        return self.contact_address_housenr != '' \
+            and self.contact_address_street != '' \
+            and (self.contact_address_city != '' or self.contact_address_zip != '')
 
     def get_description(self):
         lang_code = translation.get_language()
@@ -170,16 +186,97 @@ class Project(models.Model):
             output += cat.name + '; '
         return output
 
+    def get_languages(self):
+        if self.languages is None:
+            return 'unknown'
+        out = ''
+        for lang in self.languages.all():
+            out += lang.name + ', '
+        if out == '':
+            return 'unknown'
+        return out
+
     def get_location(self):
-        # Remember, longitude FIRST!
-        if self.geo_location is None:
-            return "%s,%s" % (DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[0])
+        if not hasattr(self, 'geo_location') or \
+            self.geo_location is None:
+                return "%s,%s" % (DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1])
         return "%s,%s" % (self.geo_location.lat, self.geo_location.lon)
 
+    def get_contact_loc(self):
+        if not hasattr(self, 'contact_location') or \
+            self.contact_location is None:
+                return "%s,%s" % (DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1])
+        return "%s,%s" % (self.contact_location.lat, self.contact_location.lon)
+
     def get_location_address(self):
-        if self.geo_location is None:
-            return DEFAULT_GEO_LOC[2]
+        if not hasattr(self, 'geo_location') or \
+            self.geo_location is None:
+                return DEFAULT_GEO_LOC[2]
         return self.geo_location.address
+
+    def get_contact_address(self):
+        if not hasattr(self, 'contact_location') or \
+            self.contact_location is None:
+                return DEFAULT_GEO_LOC[2]
+        return self.contact_location.address
+
+    def get_status_string(self):
+        if self.status is None:
+            return STATUS[3]
+        return STATUS[self.status][1]
 
     def is_online(self):
         return self.status == 1
+
+
+geo_locator = Nominatim()
+
+
+def get_geo_location(location_name):
+    if location_name is None:
+        return DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[2]
+    if len(location_name) == 0:
+        return DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[2]
+    time.sleep(WAIT_TIME_GEO_REQUESTS)
+    location = geo_locator.geocode(location_name)
+    if location is None:
+        return DEFAULT_GEO_LOC[0], DEFAULT_GEO_LOC[1], DEFAULT_GEO_LOC[2]
+    print('new location found: '+location.address+' ('+location_name+')')
+    return location.latitude, location.longitude, location.address
+
+
+def init_geo_locations(**kwargs):
+    instance = kwargs.get('instance')
+    if LOAD_GEO_LOCATIONS:
+        for area in [instance.area_city, instance.area_country, instance.area_state, DEFAULT_GEO_LOC[2]]:
+            if area is None:
+                continue
+            if len(area) == 0:
+                continue
+            try:
+                instance.geo_location = GeoLocation.objects.get(name=area)
+            except ObjectDoesNotExist:
+                lat, lon, address = get_geo_location(area)
+                new_location = GeoLocation(lat=lat, lon=lon, address=address, name=area)
+                new_location.save()
+                instance.geo_location = new_location
+            break
+        try:
+            contact_loc = instance.contact_address_street + ' ' \
+                + instance.contact_address_housenr + ', ' \
+                + instance.contact_address_zip + ' ' \
+                + instance.contact_address_city + ' ' \
+                + instance.contact_address_country
+            contact_loc = contact_loc.strip(', ')
+            if contact_loc != '':
+                try:
+                    instance.contact_location = GeoLocation.objects.get(name=contact_loc)
+                except ObjectDoesNotExist:
+                    lat, lon, address = get_geo_location(contact_loc)
+                    new_location = GeoLocation(lat=lat, lon=lon, address=address, name=contact_loc)
+                    new_location.save()
+                    instance.contact_location = new_location
+        except Exception as e:
+            pass
+
+pre_save.connect(init_geo_locations, Project)

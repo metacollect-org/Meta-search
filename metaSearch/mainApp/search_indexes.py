@@ -22,14 +22,25 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     content_auto = indexes.EdgeNgramField(model_attr='title')
     #pub_date = indexes.DateTimeField(model_attr='pub_date')
     location = GeoField()
+    contact_location = GeoField()
     geo_location_address = indexes.CharField(model_attr='get_location_address')
+    contact_location_address = indexes.CharField(model_attr='get_contact_address')
+    status = indexes.CharField(model_attr='get_status_string')
+    languages = indexes.CharField()
 
     def prepare_categoryName(self, object):
         return [category.name for category in object.categories.all()]
 
+    def prepare_languages(self, obj):
+        return [lang.name for lang in obj.languages.all()]
+
     def prepare_location(self, obj):
         # If you're just storing the floats...
         return obj.get_location()
+
+    def prepare_contact_location(self, obj):
+        # If you're just storing the floats...
+        return obj.get_contact_loc()
 
     def get_model(self):
         return Project
