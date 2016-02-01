@@ -22,10 +22,11 @@ our Objects and their JSON, XML and YAML representation.
 
 ###Category
 Categories are used to tag the projects. Each category can have a parent, so
-a hierarchical category structure is possible.
+a hierarchical category structure is possible but currently limited to only one
+inheritance(?)
 
 ####JSON
-```JSON
+```json
 [{
 	"id": 2412,
 	"name": "german",
@@ -33,11 +34,48 @@ a hierarchical category structure is possible.
 }]
 ```
 ####XML
-
+```xml
+<root>
+  <script/>
+	<list-item>
+		<id>2412</id>
+		<name>german</name>
+		<parent>2315</parent>
+	</list-item>
+</root>
+```
 ####YAML
-
+```yaml
+- id: 2412
+  name: german
+  parent: 2315
+```
 
 ###Kind
+Kinds are used to determine to which broader category the
+
+####JSON
+```json
+[{
+	"id": 13,
+	"name": "website"
+}]
+```
+####XML
+```xml
+<root>
+	<script/>
+	<list-item>
+		<id>13</id>
+		<name>website</name>
+	</list-item>
+</root>
+```
+####YAML
+```yaml
+- id: 13
+  name: website
+```
 
 ###Language
 
