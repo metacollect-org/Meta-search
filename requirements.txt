@@ -1,6 +1,6 @@
 django==1.8
 django-haystack
-elasticsearch
+elasticsearch==1.7.0
 requests
 djangorestframework
 geopy
