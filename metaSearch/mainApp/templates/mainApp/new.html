@@ -23,8 +23,8 @@
 	<label for="desc_tabs" class="control-label">Descriptions</label>
 	<div id="desc_tabs" class="form-group">
 		<ul>
-			<li><a href="#{{ form.description_de.id_for_label }}">de</a></li>
-			<li><a href="#{{ form.description_en.id_for_label }}">en</a></li>
+			<li class="{{form.description_de|is_required}}"><a href="#{{ form.description_de.id_for_label }}">de</a></li>
+			<li class="{{form.description_en|is_required}}"><a href="#{{ form.description_en.id_for_label }}">en</a></li>
 		</ul>
 		<div id="{{ form.description_de.id_for_label }}" class="{{form.description_de|is_required}}">
 			{% render_field form.description_de class+="form-control" %}
@@ -50,7 +50,7 @@
 	  {% render_field form.languages class+="select2" %}
 	</div>
 	 	<div class="form-group {{form.logo|is_required}}">
-		  <label for="{{ form.logo.id_for_label }}" class="control-label">Logo</label>
+		  <label for="{{ form.logo.id_for_label }}" class="control-label">Logo (<a href="#" id="blob" rel="popover">preview</a>)</label>
 		  <!--{% render_field form.logo type="url" class+="form-control" %}-->
 		  <input type="url" class="form-control" name="{{form.logo.name}}" id="{{form.logo.id_for_label}}" value="{{form.logo.value}}">
 	  </div>
@@ -58,14 +58,26 @@
   <button type="submit" value="Create" class="btn btn-primary">Create</button>
 </form>
 
-  <script>
+<script>
   $(function() {
-    $( "#desc_tabs" ).tabs();
+    $( '#desc_tabs' ).tabs();
 
     $('.select2').select2({
     	theme: "bootstrap",
     	width: null
     });
+
+    var img = '<img src="'+$('#{{form.logo.id_for_label}}').val()+' width="50" height="50" alt="Image not found" />';
+    $('#blob').popover({ html: true, content: img, trigger: 'hover' });
   });
-  </script>
+
+	$('#{{form.logo.id_for_label}}').change(function() {
+		var text = $('#{{form.logo.id_for_label}}').val();
+		if(text.endsWith('.png') || text.endsWith('.jpg') || text.endsWith('.svg') || text.endsWith('.gif'))
+			var img = '<img src="'+text+' width="50" height="50" alt="Image not found" />';
+		else
+			var img = '<p>No image URL provided.</p>';
+  	$('#blob').data('bs.popover').options.content = img;
+	});
+</script>
 {%endblock%}

@@ -6,6 +6,7 @@ h4.content {
   font-weight: bold;
 }
 
-.required > label::after {
+div.required > label::after, 
+li.required > a::after {
 	content: ' *';
 }
