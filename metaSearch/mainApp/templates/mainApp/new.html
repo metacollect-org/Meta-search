@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<div class="page-header">
+<div class="page-header" style="margin-top: 0">
 	<button type="submit" value="Create" class="btn btn-primary pull-right">Create</button>
   <h3>New Project</h3>
 </div>
@@ -50,7 +50,7 @@
 	  {% render_field form.languages class+="select2" %}
 	</div>
 	 	<div class="form-group {{form.logo|is_required}}">
-		  <label for="{{ form.logo.id_for_label }}" class="control-label">Logo (<a href="#" id="blob" rel="popover">preview</a>)</label>
+		  <label for="{{ form.logo.id_for_label }}" class="control-label">Logo (<a href="#{{ form.logo.id_for_label }}" id="blob" rel="popover">preview</a>)</label>
 		  <!--{% render_field form.logo type="url" class+="form-control" %}-->
 		  <input type="url" class="form-control" name="{{form.logo.name}}" id="{{form.logo.id_for_label}}" value="{{form.logo.value}}">
 	  </div>

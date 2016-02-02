@@ -81,6 +81,9 @@ class Kind(models.Model):
 
     def __str__(self):
         return self.name
+        
+    class Meta:
+        ordering = ['name']
 
 
 class PageLanguage(models.Model):
@@ -91,6 +94,9 @@ class PageLanguage(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['abbreviation']
+
 
 # Create your models here.
 class Category(models.Model):
@@ -99,6 +105,8 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
 
 # Create your models here.
 class GeoLocation(models.Model):

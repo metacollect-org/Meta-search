@@ -1,0 +1,10 @@
+{% extends "mainApp/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete: <b>{{ object }}</b>?</p>
+    <button type="submit" value="Confirm" class="btn btn-default">Yes</button>
+    <a type="button" value="No" class="btn btn-default" href="{% url 'detail' project.id %}" >No</a>
+</form>
+{% endblock %}

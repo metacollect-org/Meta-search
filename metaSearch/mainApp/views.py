@@ -4,6 +4,7 @@ from django.shortcuts import render
 from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery, Clean
 from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse_lazy
 from django.views import generic
 from haystack.forms import SearchForm
 from django.core.urlresolvers import reverse
@@ -26,6 +27,9 @@ def index(request):
 
     context = {'project_list': project_list, 'categories': categories}
     return render(request, 'mainApp/index.html', context)
+
+def data(request):
+    return render(request, 'mainApp/data.html')
 
 def detail(request, project_id):
     print("ints")
@@ -77,11 +81,20 @@ class ProjectNewView(generic.edit.CreateView):
 
     template_name = 'mainApp/new.html'
 
-class ProjectDataView(generic.edit.CreateView):
+class ProjectDelete(generic.edit.DeleteView):
     model = Project
-    fields = [] # Excluding updated_at and created_at as the property 'auto_now_add=True' makes them read-only, resulting in an error when adding them to this form.
-    for f in Project._meta.get_fields():
-        if f.name != 'updated_at' and f.name != 'created_at':
-            fields.append(f.name)
+    success_url = reverse_lazy('index')
 
-    template_name = 'mainApp/data.html'
+class ProjectEdit(generic.edit.UpdateView):
+    model = Project
+    fields = ['title']
+    template_name = 'mainApp/edit.html'
+
+#class ProjectDataView(generic.edit.CreateView):
+#    model = Project
+#    fields = [] # Excluding updated_at and created_at as the property 'auto_now_add=True' makes them read-only, resulting in an error when adding them to this form.
+#    for f in Project._meta.get_fields():
+#        if f.name != 'updated_at' and f.name != 'created_at':
+#            fields.append(f.name)
+#
+#    template_name = 'mainApp/data.html'
