@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'haystack',
     'mainApp',
     'rest_framework',
+    'widget_tweaks',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -138,4 +139,3 @@ REST_FRAMEWORK = {
         ),
 
 }
-

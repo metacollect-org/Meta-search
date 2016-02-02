@@ -6,6 +6,8 @@ from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import pre_save
 from geopy.geocoders import Nominatim
+from django.core.urlresolvers import reverse
+
 import time
 
 WAIT_TIME_GEO_REQUESTS = 2  # in seconds, ABSOLUTE MIN IS 1 SECOND
@@ -127,7 +129,6 @@ class Project(models.Model):
     description_fr = models.TextField(blank = True, default='')
     description_ar = models.TextField(blank = True, default='')
 
-
     area_country = models.CharField(max_length=200, blank=True, default='')
     area_state = models.CharField(max_length=200, blank=True, default='') # bundesland
     area_city = models.CharField(max_length=200, blank=True, default='')
@@ -195,6 +196,9 @@ class Project(models.Model):
         if out == '':
             return 'unknown'
         return out
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'project_id': self.pk})
 
     def get_location(self):
         if not hasattr(self, 'geo_location') or \

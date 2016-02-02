@@ -75,7 +75,6 @@ class ProjectNewView(generic.edit.CreateView):
         if f.name != 'updated_at' and f.name != 'created_at':
             fields.append(f.name)
 
-    #fields = [f.name for f in Project._meta.get_fields()]
     template_name = 'mainApp/new.html'
 
 class ProjectDataView(generic.edit.CreateView):
@@ -85,5 +84,4 @@ class ProjectDataView(generic.edit.CreateView):
         if f.name != 'updated_at' and f.name != 'created_at':
             fields.append(f.name)
 
-    #fields = [f.name for f in Project._meta.get_fields()]
     template_name = 'mainApp/data.html'

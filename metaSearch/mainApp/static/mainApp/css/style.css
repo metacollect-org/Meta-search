@@ -5,3 +5,7 @@
 h4.content {
   font-weight: bold;
 }
+
+.required > label::after {
+	content: ' *';
+}

@@ -6,3 +6,4 @@ djangorestframework
 geopy
 djangorestframework-xml
 djangorestframework-yaml
+django-widget-tweaks
