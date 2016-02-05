@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-26 18:51+0100\n"
+"POT-Creation-Date: 2016-02-05 14:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,51 +18,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:140 templates/mainApp/index.html:40
+#: models.py:179 templates/mainApp/index.html:40
 msgid "No description available"
 msgstr "Keine Beschreibung vorhanden"
 
-#: models.py:145
+#: models.py:184
 msgid "Translations are not known"
 msgstr "Übersetzungen sind nicht bekannt"
 
-#: models.py:153
+#: models.py:192
 msgid "Belongs to no categories"
 msgstr "Gehört keiner Kategorie an"
 
-#: templates/mainApp/base.html:49 templates/mainApp/base.html.py:59
-msgid "Register"
-msgstr "Registrieren"
-
-#: templates/mainApp/base.html:49 templates/mainApp/base.html.py:59
-msgid "Data"
-msgstr "Data"
-
-#: templates/mainApp/base.html:50 templates/mainApp/base.html.py:58
+#: templates/mainApp/base.html:54 templates/mainApp/base.html.py:66
 msgid "FAQ"
 msgstr "FAQ"
 
-#: templates/mainApp/base.html:51 templates/mainApp/base.html.py:57
+#: templates/mainApp/base.html:55 templates/mainApp/base.html.py:65
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/mainApp/base.html:52 templates/mainApp/base.html.py:56
+#: templates/mainApp/base.html:56 templates/mainApp/base.html.py:64
 msgid "About"
 msgstr "Über uns"
 
-#: templates/mainApp/detail.html:22 templates/mainApp/index.html:31
+#: templates/mainApp/base.html:57 templates/mainApp/base.html.py:63
+msgid "Join"
+msgstr "Mach mit"
+
+#: templates/mainApp/base.html:58 templates/mainApp/base.html.py:62
+msgid "Data"
+msgstr "Data"
+
+#: templates/mainApp/detail.html:20 templates/mainApp/index.html:31
 msgid "Description"
 msgstr "Beschreibung"
 
-#: templates/mainApp/detail.html:26
+#: templates/mainApp/detail.html:24
 msgid "Available in the languages"
 msgstr "In folgenden Sprachen verfügbar"
 
-#: templates/mainApp/detail.html:28
+#: templates/mainApp/detail.html:26
 msgid "Area of operation"
 msgstr "Einsatzgebiet"
 
-#: templates/mainApp/detail.html:30
+#: templates/mainApp/detail.html:28
 msgid "Contact address"
 msgstr "Kontaktadresse"
 
@@ -77,3 +77,6 @@ msgstr "Projektname"
 #: templates/mainApp/index.html:26
 msgid "Categories"
 msgstr "Kategorien"
+
+#~ msgid "Register"
+#~ msgstr "Registrieren"
