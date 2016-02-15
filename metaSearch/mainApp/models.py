@@ -81,7 +81,7 @@ class Kind(models.Model):
 
     def __str__(self):
         return self.name
-        
+
     class Meta:
         ordering = ['name']
 
@@ -119,7 +119,7 @@ class GeoLocation(models.Model):
 
 
 class ProgrammingLanguage(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -127,7 +127,7 @@ class ProgrammingLanguage(models.Model):
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
-    url = models.URLField()
+    url = models.URLField(max_length=400)
     kind = models.ManyToManyField(Kind)
     organisation_name = models.CharField(max_length=200, blank=True, default='')
     categories = models.ManyToManyField(Category)
@@ -142,13 +142,13 @@ class Project(models.Model):
     area_city = models.CharField(max_length=200, blank=True, default='')
     geo_location = models.ForeignKey(GeoLocation, blank=True, null=True)
     status = models.IntegerField(choices=STATUS)
-    logo = models.URLField(null=True, blank=True, default=default_logo)
+    logo = models.URLField(null=True, blank=True, default=default_logo, max_length=400)
     contact_socialmedia_fb = models.URLField(null=True, blank=True)
     contact_socialmedia_twitter = models.URLField(null=True, blank=True)
 #    contact_socialmedia = models.URLField(null=True, blank=True) # comma separated
     contact_telephone = models.CharField(max_length=200, blank=True, default='') # comma separated
     contact_address_street = models.CharField(max_length=200, blank=True, default='')
-    contact_address_housenr = models.CharField(max_length=20, blank=True, default='')
+    contact_address_housenr = models.CharField(max_length=50, blank=True, default='')
     contact_address_zip = models.CharField(max_length=20, blank=True, default='')
     contact_address_city = models.CharField(max_length=200, blank=True, default='')
     contact_address_country = models.CharField(max_length=200, blank=True, default='')

@@ -2,7 +2,8 @@ __author__ = 'jens'
 
 from elasticsearch import Elasticsearch
 from metaSearch.settings import HAYSTACK_CONNECTIONS
-import numpy as np
+#import numpy as np
+import math as np
 from operator import itemgetter
 
 DEFAULT_GEO_LOC = (51.0834196, 10.4234469, 'Germany')  # Center of Germany
@@ -22,9 +23,9 @@ def distance(p1, p2):
     p1lat, p1lon = float(p1[0]), float(p1[1])
     p2lat, p2lon = float(p2[0]), float(p2[1])
     latdiff = (p2lat + p1lat) / 2 * 0.01745
-    dlat = 111.3 * np.abs(p1lat - p2lat)
-    dlon = 111.3 * np.cos(latdiff) * np.abs(p1lon - p2lon)
-    return np.sqrt(np.power(dlat, 2) + np.power(dlon, 2))
+    dlat = 111.3 * np.fabs(p1lat - p2lat)
+    dlon = 111.3 * np.cos(latdiff) * np.fabs(p1lon - p2lon)
+    return np.sqrt(np.pow(dlat, 2) + np.pow(dlon, 2))
 
 
 class GeoSearch():
@@ -55,7 +56,7 @@ class GeoSearch():
     def query_address(self, address, dis, _type=MODEL_TYPE, field=AREA_LOCATION, size=999):
         pass
 
-
-geo = GeoSearch()
-for result in geo.query_distance():
-    print(result)
+# USAGE:
+# geo = GeoSearch()
+# for result in geo.query_distance():
+#     print(result)

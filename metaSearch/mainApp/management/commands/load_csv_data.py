@@ -94,6 +94,12 @@ class Command(BaseCommand):
         for row in csvReader:
             if row[2].strip() != '': # only take the ones, that have a name
                 print('loading Project: '+ row[2])
+
+                for s in row:
+                    if len(s) > 200:
+                        print('THIS ' + s + " is too long")
+                        print(' IN ' + str(row))
+
                 url = row[1].strip()
                 title = row[2]
                 finished_editing = row[3]
@@ -176,7 +182,6 @@ class Command(BaseCommand):
                     if status.strip() != '':
                         print('NEW status FOUND! ' + status)
                     newPro.status = 3
-
                 newPro.logo = logo.strip() if logo.strip() != '' else models.default_logo()
                 newPro.save()
 

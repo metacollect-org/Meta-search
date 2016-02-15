@@ -10,6 +10,7 @@ from haystack.query import SearchQuerySet
 from mainApp.haystackUtil import SearchQuerySetWrapper
 from haystack.inputs import AutoQuery
 from mainApp.customExceptions import FieldWrong
+from mainApp.elastic_util import GeoSearch
 
 
 @api_view(['GET'])
@@ -74,7 +75,39 @@ def search_language(request, format=None):
     serializer = PageLanguageSerializer(currentResults, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def search_radius(request, format=None):
+    '''
+    Search for projects in a radius around a specific geoloaction.
+    '''
+
+    lat = request.GET.get('lat')
+    lon = request.GET.get('lon')
+    radius = request.GET.get('rad')
+    max_results = request.GET.get('max')
+
+    geo = GeoSearch()
+    geo_results = geo.query_distance(lat=lat, lon=lon, size=max_results, dis=radius)
+
+    ids = []
+    for (id, distance) in geo_results:
+        ids.append(id)
+
+    project_results = Project.objects.filter(id__in=ids)
+
+    serializer = ProjectSerializer(project_results, many=True)
+    return Response(serializer.data)
+
+
+
 def apply_filters(all_objects, params):
+    '''
+    Applies the filters passed as Params to the QuerySet all_objects
+
+    The Params shall be a list of 3-tuples. Each tuple contains a field, an action
+    and a value in the form of (field, action, value). This will be passed to
+    the django-method: SearchQuerySet.filter(field__action: value)
+    '''
     for (key,action, values) in params:
         search_field = key + '__' + action if action != '' else key
         for value in values:
@@ -85,6 +118,14 @@ def apply_filters(all_objects, params):
     return all_objects
 
 def deconstruct_params(params):
+    '''
+    Takes the request object and extracts the database-queries from the get-params.
+
+    Each parameter of the get-request has to be in the format "foo*bar=value".
+    This function converts these get-params to a list of 3-tuples in the format:
+    [(foo1, bar1, value1), (foo2, bar2, value2)...]. The Parameter "format=xxx" and
+    "page=xxx" are ignored.
+    '''
     params_list = []
     params_raw = params.GET.lists()
     for (key, value) in params_raw:
@@ -95,32 +136,3 @@ def deconstruct_params(params):
             raise Exception('underscoretm','Too Many Underscores')
         params_list.append((field_action_list[0], field_action_list[1] if len(field_action_list) > 1 else '', value))
     return params_list
-
-#
-# class ProjectViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited.
-#     """
-#     queryset = Project.objects.all().order_by('-created_at')
-#     serializer_class = ProjectSerializer
-#
-# class CategoryViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited.
-#     """
-#     queryset = Category.objects.all()
-#     serializer_class = CategorySerializer
-#
-# class KindViewSet(viewsets.ModelViewSet):
-#     queryset = Kind.objects.all()
-#     serializer_class = KindSerializer
-#
-# class PageLanguageViewSet(viewsets.ModelViewSet):
-#     queryset = PageLanguage.objects.all()
-#     serializer_class = PageLanguageSerializer
-#
-# class ProgrammingLanguageViewSet(viewsets.ModelViewSet):
-#     queryset = ProgrammingLanguage.objects.all()
-#     serializer_class = ProgrammingLanguageSerializer
-#
-
