@@ -1,0 +1,1 @@
+from metaSearch.settings.dev import *
