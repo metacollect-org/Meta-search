@@ -99,6 +99,10 @@ DATABASES = {
     }
 }
 
+
+
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -123,7 +127,7 @@ LANGUAGES = (
 
 STATIC_URL = '/static/'
 
-USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_HOST = False
 
 ALLOWED_HOSTS = [
   'django.dsini20.schedar.uberspace.de/'
