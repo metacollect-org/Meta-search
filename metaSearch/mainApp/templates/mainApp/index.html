@@ -2,10 +2,13 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 {% block content %}
-  <form action="/mainApp/search/fulltext" method="GET" class="form-inline"> {% csrf_token %}
+<div class="row">
+  <form action="/mainApp/search/fulltext" method="GET" class="form-inline col-xs-12"> {% csrf_token %}
     <input type="text" name="query" class="form-control" id="search" autocomplete="off">
-    <button type="submit" value="Search" class="btn btn-default">{% trans "Search" %}</button>
-    <div id="filter-area">
+    <button type="submit" value="Search" class="btn btn-default hidden">{% trans "Search" %}</button>
+</div>
+<div class="row">
+    <div id="filter-area" class="col-xs-4">
       {% for cat in categories %}
         <div class="checkbox">
           <label>
@@ -15,43 +18,6 @@
       {% endfor %}
     </div>
   </form>
-  <br>
-  <div id="search-results"></div>
-{% if project_list %}
-    {% for project in project_list %}
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="header">{% trans "Projectname" %}</div>
-        <h4 class="content"><a href="{% url 'detail' project.id %}">{{ project.title }}</a></h4>
-        <div class="header">{% trans "Categories" %}</div>
-        <p>{%for category in project.categories.all%}
-            {%if category.parent %}
-            {{category.parent.name}}-->{{category.name}},
-            {% else %}
-            {{category.name}},
-            {% endif %}
-          {% endfor %}
-        </p>
-      </div>
-
-      <div class="col-xs-8">
-        <div class="header">{% trans "Description" %}</div>
-        <img class="media-object" src="{{project.logo}}" alt="Logo placeholder" style="max-height:100px; max-width:100px;">
-        <p class="content">{{ project.get_description }}</p>
-        <!--
-        {% if project.description_de %}
-        <p class="content">{{ project.description_de }}</p>
-        {% elif project.description_en %}
-        <p class="content">{{ project.description_en }}</p>
-        {% else %}
-        <p class="content">{% trans "No description available" %}</p>
-        {% endif %}
-        -->
-      </div>
-    </div>
-      <hr>
-    {% endfor %}
-{% else %}
-    <p>No Organisations are available.</p>
-{% endif %}
+  <div id="search-results" class="col-xs-8"></div>
+</div>
 {%endblock%}

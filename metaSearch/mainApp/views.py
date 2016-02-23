@@ -27,12 +27,10 @@ def queryset_gen(search_qs):
         yield item.objects
 
 def index(request):
-    all_results = SearchQuerySetWrapper(SearchQuerySet().all())
-    project_list = [all_results[random.randint(0, all_results.count()-1)] for x in range(0,5)]
-
     categories = Category.objects.all().filter(parent=None).order_by('name')
-
-    context = {'project_list': project_list, 'categories': categories}
+    c = Category.getCategoryTree()
+    print(c)
+    context = {'categories': categories}
     return render(request, 'mainApp/index.html', context)
 
 def data(request):
@@ -90,11 +88,22 @@ def search_fulltext(request):
 def search_titles(request):
     print(request.GET.get('q'))
     projects = None
-    if len(request.GET.get('q')) > 3:
-        projects = SearchQuerySet().autocomplete(content_auto=request.GET.get('q', ''))[:5]
+    if request.GET.get('q') and len(request.GET.get('q')) > 3:
+        projects = SearchQuerySet().filter(content_auto=request.GET.get('q', ''))
         projects = SearchQuerySetWrapper(projects)
+    elif request.GET.getlist('category'):
+        projects = Project.objects.all()
+    else:
+        projects = None
 
-    return render_to_response('mainApp/ajax_search.html', {'projects':projects})
+    category_ids = request.GET.getlist('category')
+
+    print(category_ids)
+
+    for cat_id in category_ids:
+        projects = projects.filter(categories__id=cat_id)
+
+    return render_to_response('mainApp/ajax_search.html', {'project_list':projects})
 
 def do_logout(request):
     logout(request)
