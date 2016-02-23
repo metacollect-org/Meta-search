@@ -1,6 +1,13 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponseRedirect
+from django.contrib import auth
+from django.core.context_processors import csrf
+from .forms import MyRegistrationForm
 from django.http import Http404
 from django.utils import translation
 from django.shortcuts import render
+from django.shortcuts import redirect
 from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery, Clean
 from django.shortcuts import render_to_response
@@ -88,6 +95,32 @@ def search_titles(request):
         projects = SearchQuerySetWrapper(projects)
 
     return render_to_response('mainApp/ajax_search.html', {'projects':projects})
+
+def do_logout(request):
+    logout(request)
+    return redirect('/mainApp')
+
+
+def register(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    print(user)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            return redirect('/mainApp')
+
+    if request.method == 'POST':
+        form = MyRegistrationForm(request.POST)     # create form object
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/accounts/register_success')
+    args = {}
+    args.update(csrf(request))
+    args['form'] = MyRegistrationForm()
+    return render(request, 'register.html', args)
+
 
 
 class ProjectNewView(generic.edit.CreateView):
