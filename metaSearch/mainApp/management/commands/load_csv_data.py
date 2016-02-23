@@ -304,6 +304,8 @@ class Command(BaseCommand):
                                 for currentCat in cat:
                                     if len(newPro.categories.all().filter(pk=currentCat.pk)) == 0 :
                                         newPro.categories.add(currentCat)
+                                    if currentCat.parent != None and len(newPro.categories.all().filter(pk=currentCat.parent.pk)) == 0:
+                                        newPro.categories.add(currentCat.parent)
 
                 newPro.save()
             else:
