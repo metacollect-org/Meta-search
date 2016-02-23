@@ -9,7 +9,7 @@
       {% for cat in categories %}
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="category" value="{{cat.name}}"> {{cat.name}}
+            <input type="checkbox" name="category" value="{{cat.id}}"> {{cat.name}}
           </label>
         </div>
       {% endfor %}
@@ -24,7 +24,14 @@
         <div class="header">{% trans "Projectname" %}</div>
         <h4 class="content"><a href="{% url 'detail' project.id %}">{{ project.title }}</a></h4>
         <div class="header">{% trans "Categories" %}</div>
-        <p>{{ project.get_categories }}</p>
+        <p>{%for category in project.categories.all%}
+            {%if category.parent %}
+            {{category.parent.name}}-->{{category.name}},
+            {% else %}
+            {{category.name}},
+            {% endif %}
+          {% endfor %}
+        </p>
       </div>
 
       <div class="col-xs-8">

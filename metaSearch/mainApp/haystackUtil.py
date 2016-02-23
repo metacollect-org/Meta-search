@@ -1,5 +1,6 @@
 from haystack.query import SearchQuerySet
-
+from haystack.inputs import AutoQuery, Clean
+from mainApp.models import Project
 
 class SearchQuerySetWrapper(object):
     """
@@ -30,3 +31,18 @@ class HayStackUtilities:
         for result in results_list:
             unwrapped_list.append(result.object)
         return unwrapped_list
+
+    def search_fulltext_ids(text):
+        """
+        do a fulltextsearch with Haystack and return only the ids for further
+        use with the regular database
+        """
+
+        results1 = SearchQuerySet().filter(content=AutoQuery(text))
+        results2 = Project.objects.filter(title__contains=text)
+        ids = []
+        for result in results1:
+            ids.append(result.object.id)
+        for result in results2:
+            ids.append(result.id)
+        return ids

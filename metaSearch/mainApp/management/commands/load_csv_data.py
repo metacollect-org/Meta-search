@@ -80,27 +80,89 @@ class Command(BaseCommand):
                 k.save()
         return
 
+    def init_categories(self):
+        csvReader = csv.reader(getCategoriesCsvData().split('\n'), delimiter=',')
+        first_line= csvReader.__next__() # skip the first row, because these are the column names
+        second_line = csvReader.__next__()
+        print(first_line)
+        print(second_line)
+
+        for row in csvReader:
+            category_en = row[1]
+            subcat_en = row[2]
+            description_en = row[3]
+            category_de = row[4]
+            subcat_de = row[5]
+            description_de = row[6]
+            category_fr = row[7]
+            subcat_fr = row[8]
+            description_fr = row[9]
+            category_ar = row[10]
+            subcat_ar = row[11]
+            description_ar = row[12]
+            if category_en.strip() == '': continue
+
+            print(category_en, subcat_en)
+
+            if subcat_en.strip() == "":
+                dbcat, created = Category.objects.get_or_create(name=category_en, parent=None)
+                print(created)
+                # cats = Category.objects.all().filter(name=category_en)
+                # exists = False
+                # if len(cats) != 0:
+                #     for cat in cats:
+                #         if cat.parent == None:
+                #             exists = True
+                #             break
+                # if exists: continue
+                # dbcat = Category(name=category_en)
+                dbcat.description = description_en if description_en.strip() != "" else dbcat.description
+                dbcat.name_de = category_de
+                dbcat.description_de = description_de if description_de.strip() != "" else dbcat.description_de
+                dbcat.name_fr = category_fr
+                dbcat.description_fr = description_fr if description_fr.strip() != "" else dbcat.description_fr
+                dbcat.name_ar = category_ar
+                dbcat.description_ar = description_ar if description_ar.strip() != "" else dbcat.description_ar
+                dbcat.save()
+            else:
+                if Category.objects.filter(name=subcat_en, parent__name=category_en).count() == 0:
+                    newSubCat = Category(name=subcat_en)
+                else:
+                    newSubCat = Category.objects.get(name=subcat_en, parent__name=category_en)
+                newSubCat.description = description_en if description_en.strip() != "" else newSubCat.description
+                newSubCat.name_de = subcat_de
+                newSubCat.description_de = description_de if description_de.strip() != "" else newSubCat.description_de
+                newSubCat.name_fr = subcat_fr
+                newSubCat.description_fr = description_fr if description_fr.strip() != "" else newSubCat.description_fr
+                newSubCat.name_ar = subcat_ar
+                newSubCat.description_ar = description_ar if description_ar.strip() != "" else newSubCat.description_ar
+                parCat = Category.objects.get(name=category_en, parent=None)
+                newSubCat.parent=parCat
+                newSubCat.save()
+
+
 
 
     def handle(self, *args, **options):
         self.stdout.write("Initializing Languages...")
-
         self.init_page_languages()
+        print("Initializing Kinds")
         self.init_kinds()
-
-        csvReader = csv.reader(getCsvData().split('\n'), delimiter=',')
+        print("Initializing Categories")
+        self.init_categories()
+        print("Initializing Projects")
+        csvReader = csv.reader(getProjectCsvData().split('\n'), delimiter=',')
         first_line= csvReader.__next__() # skip the first row, because these are the column names
         print(first_line)
+        project_count = 0
         for row in csvReader:
             if row[2].strip() != '': # only take the ones, that have a name
+                project_count = project_count + 1
                 print('loading Project: '+ row[2])
-
-                for s in row:
-                    if len(s) > 200:
-                        print('THIS ' + s + " is too long")
-                        print(' IN ' + str(row))
-
-                url = row[1].strip()
+                if row[1].strip().startswith('http'):
+                    url = row[1].strip()
+                else:
+                    url = 'http://'+row[1].strip()
                 title = row[2]
                 finished_editing = row[3]
                 organization_name = row[4]
@@ -180,7 +242,7 @@ class Command(BaseCommand):
                     newPro.status = 2
                 else:
                     if status.strip() != '':
-                        print('NEW status FOUND! ' + status)
+                        print('GOT UNRECOGNIZED STATUS: ' + status + ' , Project id: ' + row[0])
                     newPro.status = 3
                 newPro.logo = logo.strip() if logo.strip() != '' else models.default_logo()
                 newPro.save()
@@ -192,7 +254,7 @@ class Command(BaseCommand):
                     dbKindResult = Kind.objects.filter(name=singleKind.strip().lower())
                     kindResult = None
                     if len(dbKindResult) == 0:
-                        print('GOT UNRECOGNIZED KIND: '+ singleKind)
+                        print('GOT UNRECOGNIZED KIND: '+ singleKind + ' , Project id: ' + row[0])
                         kindResult = Kind.objects.get(name='unspecified')
                     else:
                         kindResult = dbKindResult.first()
@@ -214,12 +276,10 @@ class Command(BaseCommand):
                             try:
                                 langFromDb = PageLanguage.objects.get(alternatives__icontains=language.strip())
                             except ObjectDoesNotExist:
-                                print('ADDING NOLANG: ' + language.strip())
+                                print('GOT UNRECOGNIZED LANGUAGE: ' + language.strip() + ' , Project id: ' + row[0])
                                 langFromDb = PageLanguage.objects.get(name='unknown')
 
                     newPro.languages.add(langFromDb)
-
-                newPro.needs = software_development_needs
 
                 programming_languages = programming_languages.strip().lower()
                 prog_arr = programming_languages.split(',')
@@ -234,22 +294,29 @@ class Command(BaseCommand):
                         newPro.programming_languages.add(dbPlang)
 
                 catList = categories.split(',')
-                if len(catList) > 1:
+                if len(catList) > 0 and categories.strip != '':
                     for currentCat in catList:
                         if currentCat.strip() != '' :
-                            cat = None
-                            try:
-                                cat = Category.objects.get(name=currentCat.strip().lower())
-                            except ObjectDoesNotExist:
-                                cat = Category(name=currentCat.strip().lower())
-                                cat.save()
-                            newPro.categories.add(cat)
+                            cat = Category.objects.all().filter(name=currentCat.strip())
+                            if len(cat) == 0:
+                                print('GOT UNRECOGNIZED CATEGORY : ' + currentCat + ' , Project id: ' + row[0])
+                            else:
+                                for currentCat in cat:
+                                    if len(newPro.categories.all().filter(pk=currentCat.pk)) == 0 :
+                                        newPro.categories.add(currentCat)
 
                 newPro.save()
+            else:
+                print("GOT NO TITLE in Project id:  " + row[0] )
+        print("saved " + str(project_count) + " Projects!")
 
+def getCategoriesCsvData():
+    categories_url = 'https://docs.google.com/spreadsheets/d/1L9huhE5AFTwjurwd_dGBasU9Qe0g8gFSmpiMrggxEKA/pub?gid=1240095638&single=true&output=csv'
+    response = requests.get(categories_url)
+    assert response.status_code == 200, 'Wrong status code'
+    return response.content.decode('utf-8')
 
-
-def getCsvData():
+def getProjectCsvData():
    response = requests.get('https://docs.google.com/spreadsheets/d/1L9huhE5AFTwjurwd_dGBasU9Qe0g8gFSmpiMrggxEKA/pub?gid=1986004337&single=true&output=csv')
    assert response.status_code == 200, 'Wrong status code'
    return response.content.decode('utf-8')

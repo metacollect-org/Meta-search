@@ -102,6 +102,18 @@ class PageLanguage(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=200)
     parent = models.ForeignKey('self', null=True, blank=True)
+
+    name_de = models.CharField(max_length=200)
+    name_fr = models.CharField(max_length=200)
+    name_ar = models.CharField(max_length=200)
+    description = models.TextField(default="No description available")
+    description_de = models.TextField(default="Keine Beschreibung Vorhanden")
+    description_fr = models.TextField(default="Aucune description disponible")
+    description_ar = models.TextField(default="لا يوجد وصف متاح")
+
+
+
+
     def __str__(self):
         return self.name
 

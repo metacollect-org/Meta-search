@@ -23,7 +23,7 @@ def index(request):
     all_results = SearchQuerySetWrapper(SearchQuerySet().all())
     project_list = [all_results[random.randint(0, all_results.count()-1)] for x in range(0,5)]
 
-    categories = Category.objects.all().order_by('name')
+    categories = Category.objects.all().filter(parent=None).order_by('name')
 
     context = {'project_list': project_list, 'categories': categories}
     return render(request, 'mainApp/index.html', context)
@@ -44,22 +44,40 @@ def detail(request, project_id):
 
     except Project.DoesNotExist:
         raise Http404("Project does not exist")
+    print(project.url)
     return render(request, 'mainApp/detail.html', {'project': project, 'desc': desc})
 
 def search_fulltext(request):
-    if 'query' in request.GET and request.GET['query'] != '':
-        project_list = SearchQuerySet().filter(text__startswith=request.GET.get('query',''))
-        #project_list = SearchQuerySet().autocomplete(content_auto=request.GET.get('query',''))
-        #project_list = SearchQuerySet().filter(categoryName=AutoQuery(request.GET.get('query')))
-        project_list = project_list | SearchQuerySet().filter(categoryName__in=request.GET.get('query').split(' '))
-        #project_list = SearchQuerySetWrapper(project_list)
-    else:
-        project_list = SearchQuerySet().filter(categoryName__in=request.GET.getlist('category'))
-        #project_list = Project.objects.filter(categories__in=request.GET.getlist('category'))
+    search_text = request.GET.get('query')
+    print("Search_Text : " + str(search_text))
+    if search_text == None or search_text == '' :
+        filtered_projects = Project.objects.all()
+    else :
+        ids = HayStackUtilities.search_fulltext_ids(search_text)
+        filtered_projects = Project.objects.all().filter(pk__in=ids)
 
-    #project_list = project_list.filter(categories__in=request.GET.getlist('category'))
-    project_list = SearchQuerySetWrapper(project_list)
-    context = {'project_list': project_list}
+    category_ids = request.GET.getlist('category')
+
+    print(category_ids)
+
+    for cat_id in category_ids:
+        filtered_projects = filtered_projects.filter(categories__id=cat_id)
+
+    # if 'query' in request.GET and request.GET['query'] != '':
+    #     project_list = SearchQuerySet().filter(text__startswith=request.GET.get('query',''))
+    #     #project_list = SearchQuerySet().autocomplete(content_auto=request.GET.get('query',''))
+    #     #project_list = SearchQuerySet().filter(categoryName=AutoQuery(request.GET.get('query')))
+    #     project_list = project_list | SearchQuerySet().filter(categoryName__in=request.GET.get('query').split(' '))
+    #     #project_list = SearchQuerySetWrapper(project_list)
+    # else:
+    #     project_list = SearchQuerySet().filter(categoryName__in=request.GET.getlist('category'))
+    #     #project_list = Project.objects.filter(categories__in=request.GET.getlist('category'))
+    #
+    # #project_list = project_list.filter(categories__in=request.GET.getlist('category'))
+    # project_list = SearchQuerySetWrapper(project_list)
+    for project in filtered_projects:
+        print(len(project.categories.all()))
+    context = {'project_list': filtered_projects}
     return render(request, 'mainApp/index.html', context)
 
 def search_titles(request):

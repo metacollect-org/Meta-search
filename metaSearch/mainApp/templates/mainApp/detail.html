@@ -19,7 +19,7 @@
     <div class="media-body">
       <h4 class="media-heading">{% trans "Description" %}</h4>
       <p>{{ desc|linebreaks }}</p>
-      <p><a href="{{ project.url }}">{{project.url}}</a></p>
+      <p><a target="_blank" href="{{ project.url }}">{{project.url}}</a></p>
       <p>{{ project.get_categories }}</p>
       <h4>{% trans "Available in the languages" %}</h4>
       <p>{{ project.get_page_languages }}</p>
