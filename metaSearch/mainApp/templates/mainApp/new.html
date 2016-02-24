@@ -54,8 +54,8 @@
         </div>
         <div class="form-group {{ form.categories|is_required }}">
             <label for="{{ form.categories.id_for_label }}" class="control-label">Categories</label>
-            <select id='{{ form.categories.id_for_label }}'
-                    multiple='multiple' style="position: absolute; left: -9999px;">
+            <select id="{{ form.categories.id_for_label }}"
+                    multiple="multiple" style="position: absolute; left: -9999px;">
             </select>
         </div>
         <div class="form-group {{ form.languages|is_required }}">
@@ -97,7 +97,7 @@
             $('#blob').data('bs.popover').options.content = img;
         });
 
-        $(document).ready(function () {
+        $(function () {
             $.getJSON("../../api/search/category?parent*isnull=True&format=json", function (data) {
                 var select = document.getElementById('{{ form.categories.id_for_label }}')
                 var lastID = data[data.length - 1].id;
@@ -116,6 +116,9 @@
                         opt.value = val.id
                         opt.innerHTML = val.name
                         grp.appendChild(opt)
+                        if (val.id == lastID) {
+                            $('#{{ form.categories.id_for_label }}').multiSelect({selectableOptgroup: true, keepOrder: true});
+                        }
                     }).done(function() {
                         if (val.id == lastID) {
                             $('#{{ form.categories.id_for_label }}').multiSelect({selectableOptgroup: true, keepOrder: true});
