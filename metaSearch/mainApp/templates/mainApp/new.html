@@ -3,89 +3,129 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<div class="page-header" style="margin-top: 0">
-	<button type="submit" value="Create" class="btn btn-primary pull-right">Create</button>
-  <h3>New Project</h3>
-</div>
-<form action="" method="post">{% csrf_token %}
-	<div class="form-group {{form.title|is_required}}">
-	  <label for="{{ form.title.id_for_label }}" class="control-label">Project name</label>
-	  {% render_field form.title class+="form-control" %}
- 	</div>
- 	<div class="form-group {{form.url|is_required}}">
-	  <label for="{{ form.url.id_for_label }}" class="control-label">URL</label>
-	  {% render_field form.url type="url" class+="form-control" %}
-	</div>
- 	<div class="form-group {{form.organisation_name|is_required}}">
-	  <label for="{{ form.organisation_name.id_for_label }}" class="control-label">Organisation</label>
-	  {% render_field form.organisation_name class+="form-control" %}
-	</div>
-	<label for="desc_tabs" class="control-label">Descriptions</label>
-	<div id="desc_tabs" class="form-group">
-		<ul>
-			<li class="{{form.description_de|is_required}}"><a href="#{{ form.description_de.id_for_label }}">de</a></li>
-			<li class="{{form.description_en|is_required}}"><a href="#{{ form.description_en.id_for_label }}">en</a></li>
-			<li class="{{form.description_ar|is_required}}"><a href="#{{ form.description_ar.id_for_label }}">ar</a></li>
-		</ul>
-		<div id="{{ form.description_de.id_for_label }}" class="{{form.description_de|is_required}}">
-			{% render_field form.description_de class+="form-control" %}
-		</div>
-		<div id="{{ form.description_en.id_for_label }}" class="{{form.description_en|is_required}}">
-			{% render_field form.description_en class+="form-control" %}
-		</div>
-		<div id="{{ form.description_ar.id_for_label }}" class="{{form.description_ar|is_required}}">
-			{% render_field form.description_ar class+="form-control" style="direction: rtl;" %}
-		</div>
-	</div>
-	<div class="form-group {{form.needs|is_required}}">
-  	<label for="{{ form.needs.id_for_label }}" class="control-label">Needs</label>
-	  {% render_field form.needs placeholder="max 200 characters" class+="form-control" %}
-	</div>
-	<div class="form-group {{form.status|is_required}}">
-  	<label for="{{ form.status.id_for_label }}" class="control-label">Status</label>
-	  {% render_field form.status class+="form-control" %}
-	</div>
-		<div class="form-group {{form.kind|is_required}}">
-  	<label for="{{ form.kind.id_for_label }}" class="control-label">Kind</label>
-	  {% render_field form.kind class+="select2" %}
-	</div>
-		<div class="form-group {{form.categories|is_required}}">
-  	<label for="{{ form.categories.id_for_label }}" class="control-label">Categories</label>
-	  {% render_field form.categories class+="select2" %}
-	</div>
-		<div class="form-group {{form.languages|is_required}}">
-  	<label for="{{ form.languages.id_for_label }}" class="control-label">Languages</label>
-	  {% render_field form.languages class+="select2" %}
-	</div>
-	 	<div class="form-group {{form.logo|is_required}}">
-		  <label for="{{ form.logo.id_for_label }}" class="control-label">Logo (<a href="#{{ form.logo.id_for_label }}" id="blob" rel="popover">preview</a>)</label>
-		  <!--{% render_field form.logo type="url" class+="form-control" %}-->
-		  <input type="url" class="form-control" name="{{form.logo.name}}" id="{{form.logo.id_for_label}}" value="{{form.logo.value}}">
-	  </div>
-	</div>
-  <button type="submit" value="Create" class="btn btn-primary">Create</button>
-</form>
+    <div class="page-header" style="margin-top: 0">
+        <button type="submit" value="Create" class="btn btn-primary pull-right">Create</button>
+        <h3>New Project</h3>
+    </div>
+    <form action="" method="post">{% csrf_token %}
+        <div class="form-group {{ form.title|is_required }}">
+            <label for="{{ form.title.id_for_label }}" class="control-label">Project name</label>
+            {% render_field form.title class+="form-control" %}
+        </div>
+        <div class="form-group {{ form.url|is_required }}">
+            <label for="{{ form.url.id_for_label }}" class="control-label">URL</label>
+            {% render_field form.url type="url" class+="form-control" %}
+        </div>
+        <div class="form-group {{ form.organisation_name|is_required }}">
+            <label for="{{ form.organisation_name.id_for_label }}" class="control-label">Organisation</label>
+            {% render_field form.organisation_name class+="form-control" %}
+        </div>
+        <label for="desc_tabs" class="control-label">Descriptions</label>
+        <div id="desc_tabs" class="form-group">
+            <ul>
+                <li class="{{ form.description_de|is_required }}"><a
+                        href="#{{ form.description_de.id_for_label }}">de</a></li>
+                <li class="{{ form.description_en|is_required }}"><a
+                        href="#{{ form.description_en.id_for_label }}">en</a></li>
+                <li class="{{ form.description_ar|is_required }}"><a
+                        href="#{{ form.description_ar.id_for_label }}">ar</a></li>
+            </ul>
+            <div id="{{ form.description_de.id_for_label }}" class="{{ form.description_de|is_required }}">
+                {% render_field form.description_de class+="form-control" %}
+            </div>
+            <div id="{{ form.description_en.id_for_label }}" class="{{ form.description_en|is_required }}">
+                {% render_field form.description_en class+="form-control" %}
+            </div>
+            <div id="{{ form.description_ar.id_for_label }}" class="{{ form.description_ar|is_required }}">
+                {% render_field form.description_ar class+="form-control" style="direction: rtl;" %}
+            </div>
+        </div>
+        <div class="form-group {{ form.needs|is_required }}">
+            <label for="{{ form.needs.id_for_label }}" class="control-label">Needs</label>
+            {% render_field form.needs placeholder="max 200 characters" class+="form-control" %}
+        </div>
+        <div class="form-group {{ form.status|is_required }}">
+            <label for="{{ form.status.id_for_label }}" class="control-label">Status</label>
+            {% render_field form.status class+="form-control" %}
+        </div>
+        <div class="form-group {{ form.kind|is_required }}">
+            <label for="{{ form.kind.id_for_label }}" class="control-label">Kind</label>
+            {% render_field form.kind class+="select2" %}
+        </div>
+        <div class="form-group {{ form.categories|is_required }}">
+            <label for="{{ form.categories.id_for_label }}" class="control-label">Categories</label>
+            <select id='{{ form.categories.id_for_label }}'
+                    multiple='multiple' style="position: absolute; left: -9999px;">
+            </select>
+        </div>
+        <div class="form-group {{ form.languages|is_required }}">
+            <label for="{{ form.languages.id_for_label }}" class="control-label">Languages</label>
+            {% render_field form.languages class+="select2" %}
+        </div>
+        <div class="form-group {{ form.logo|is_required }}">
+            <label for="{{ form.logo.id_for_label }}" class="control-label">Logo (<a
+                    href="#{{ form.logo.id_for_label }}" id="blob" rel="popover">preview</a>)</label>
+            <!--{% render_field form.logo type="url" class+="form-control" %}-->
+            <input type="url" class="form-control" name="{{ form.logo.name }}" id="{{ form.logo.id_for_label }}"
+                   value="{{ form.logo.value }}">
+        </div>
+        </div>
+        <button type="submit" value="Create" class="btn btn-primary">Create</button>
+    </form>
 
-<script>
-  $(function() {
-    $( '#desc_tabs' ).tabs();
+    {% load staticfiles %}
+    <script src="{% static 'mainApp/js/jquery.multi-select.js' %}" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $('#desc_tabs').tabs();
 
-    $('.select2').select2({
-    	theme: "bootstrap",
-    	width: null
-    });
+            $('.select2').select2({
+                theme: "bootstrap",
+                width: null
+            });
 
-    var img = '<img src="'+$('#{{form.logo.id_for_label}}').val()+' width="50" height="50" alt="Image not found" />';
-    $('#blob').popover({ html: true, content: img, trigger: 'hover' });
-  });
+            var img = '<img src="' + $('#{{form.logo.id_for_label}}').val() + ' width="50" height="50" alt="Image not found" />';
+            $('#blob').popover({html: true, content: img, trigger: 'hover'});
+        });
 
-	$('#{{form.logo.id_for_label}}').change(function() {
-		var text = $('#{{form.logo.id_for_label}}').val();
-		if(text.endsWith('.png') || text.endsWith('.jpg') || text.endsWith('.svg') || text.endsWith('.gif'))
-			var img = '<img src="'+text+' width="50" height="50" alt="Image not found" />';
-		else
-			var img = '<p>No image URL provided.</p>';
-  	$('#blob').data('bs.popover').options.content = img;
-	});
-</script>
-{%endblock%}
+        $('#{{form.logo.id_for_label}}').change(function () {
+            var text = $('#{{form.logo.id_for_label}}').val();
+            if (text.endsWith('.png') || text.endsWith('.jpg') || text.endsWith('.svg') || text.endsWith('.gif'))
+                var img = '<img src="' + text + ' width="50" height="50" alt="Image not found" />';
+            else
+                var img = '<p>No image URL provided.</p>';
+            $('#blob').data('bs.popover').options.content = img;
+        });
+
+        $(document).ready(function () {
+            $.getJSON("../../api/search/category?parent*isnull=True&format=json", function (data) {
+                var select = document.getElementById('{{ form.categories.id_for_label }}')
+                var lastID = data[data.length - 1].id;
+                $.each(data, function (key, val) {
+                    var grp = document.createElement('optgroup');
+                    grp.setAttribute("label", val.name)
+                    $.getJSON("../../api/search/category?format=json&parent=" + val.id, function (data) {
+                        $.each(data, function (key, val) {
+                            var opt = document.createElement('option');
+                            opt.value = val.id
+                            opt.innerHTML = val.name
+                            grp.appendChild(opt)
+                        });
+                    }).fail(function () {
+                        var opt = document.createElement('option');
+                        opt.value = val.id
+                        opt.innerHTML = val.name
+                        grp.appendChild(opt)
+                    }).done(function() {
+                        if (val.id == lastID) {
+                            $('#{{ form.categories.id_for_label }}').multiSelect({selectableOptgroup: true, keepOrder: true});
+                        }
+                    });
+
+                    select.appendChild(grp)
+                });
+
+            });
+        })
+    </script>
+{% endblock %}
