@@ -110,7 +110,7 @@ def do_logout(request):
     return redirect('/mainApp')
 
 
-def register(request):
+def auth(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)
@@ -120,15 +120,21 @@ def register(request):
             login(request, user)
             return redirect('/mainApp')
 
+def register(request):
+    form = MyRegistrationForm()
     if request.method == 'POST':
         form = MyRegistrationForm(request.POST)     # create form object
+        print(form)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/accounts/register_success')
+            user = form.save()
+            authenticate(username=user.username, password=user.password)
+            login(request, user)
+            return HttpResponseRedirect('/mainApp/')
     args = {}
     args.update(csrf(request))
-    args['form'] = MyRegistrationForm()
-    return render(request, 'register.html', args)
+    args['form'] = form
+    print(args)
+    return render(request, 'registration/register.html', args)
 
 
 

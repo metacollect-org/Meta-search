@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from django.views.generic import TemplateView
+from django.contrib.auth import views as auth_views
 
 from . import views
 from . import views_api
@@ -6,6 +8,9 @@ from . import views_api
 app_name = 't'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout',{'next_page': '/mainApp/'}, name='logout'),
+    url(r'^register/$', views.register, name='register'),
     url(r'^(?P<project_id>\d+)/$', views.detail, name='detail'),
     url(r'^search/autocomplete', views.search_titles, name='title'),
     url(r'^search/fulltext', views.search_fulltext, name='fulltext'),
