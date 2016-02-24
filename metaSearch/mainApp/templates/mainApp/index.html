@@ -3,7 +3,7 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% block content %}
 <div class="row">
-  <form action="/mainApp/search/fulltext" method="GET" class="form-inline col-xs-12"> {% csrf_token %}
+  <form action="javascript:void(0)" method="GET" class="form-inline col-xs-12"> {% csrf_token %}
     <input type="text" name="query" class="form-control" id="search" autocomplete="off">
     <button type="submit" value="Search" class="btn btn-default hidden">{% trans "Search" %}</button>
 </div>
