@@ -46,6 +46,7 @@ INSTALLED_APPS = (
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -143,3 +144,23 @@ REST_FRAMEWORK = {
         ),
 
 }
+# CORS-Settings  (Cross-Origin-Resource-Sharing, needed for the api to be accessible via ajax)
+CORS_ORIGIN_ALLOW_ALL = True  # Allow all origins
+CORS_URLS_REGEX = r'^/api/.*$' # Enable only for our api-part
+CORS_ALLOW_METHODS = ( # Only allow GET and OPTIONS-requests, as these are save and can not do any harm
+    'GET',
+    'OPTIONS'
+)
+
+
+# EMAIL-Settings
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '<email_server>'
+EMAIL_HOST_PASSWORD = '<pw>'
+EMAIL_HOST_USER = '<email_address>'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+

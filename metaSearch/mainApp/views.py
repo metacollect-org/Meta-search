@@ -21,8 +21,8 @@ def queryset_gen(search_qs):
 
 def index(request):
     categories = Category.objects.all().filter(parent=None).order_by('name')
-    c = Category.getCategoryTree()
-    print(c)
+    # c = Category.getCategoryTree()
+    # print(c)
     context = {'categories': categories}
     return render(request, 'mainApp/index.html', context)
 
