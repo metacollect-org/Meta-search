@@ -97,6 +97,15 @@
             $('#blob').data('bs.popover').options.content = img;
         });
 
+        function initCategories() {
+            $('#{{ form.categories.id_for_label }}').multiSelect({
+                selectableOptgroup: true,
+                keepOrder: true,
+                selectableHeader: "<div class='control-label'>Selectable items</div>",
+                selectionHeader: "<div class='control-label'>Selections</div>"
+            });
+        }
+
         $(function () {
             $.getJSON("../../api/search/category?parent*isnull=True&format=json", function (data) {
                 var select = document.getElementById('{{ form.categories.id_for_label }}')
@@ -117,11 +126,11 @@
                         opt.innerHTML = val.name
                         grp.appendChild(opt)
                         if (val.id == lastID) {
-                            $('#{{ form.categories.id_for_label }}').multiSelect({selectableOptgroup: true, keepOrder: true});
+                            initCategories()
                         }
                     }).done(function() {
                         if (val.id == lastID) {
-                            $('#{{ form.categories.id_for_label }}').multiSelect({selectableOptgroup: true, keepOrder: true});
+                            initCategories()
                         }
                     });
 
