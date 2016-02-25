@@ -1,19 +1,19 @@
-from django.http import Http404
-from django.utils import translation
-from django.shortcuts import render
-from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery, Clean
-from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse_lazy
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render
+from django.shortcuts import render_to_response
+from django.utils import translation
 from django.views import generic
-from haystack.forms import SearchForm
-from django.core.urlresolvers import reverse
-from .haystackUtil import HayStackUtilities
-from mainApp.haystackUtil import SearchQuerySetWrapper
-from .models import Project
+from haystack.query import SearchQuerySet
+
+import ast
+
+from .JoinForm import JoinForm
+from .haystackUtil import HayStackUtilities, SearchQuerySetWrapper
 from .models import Category
 from .models import PageLanguage
-import random
+from .models import Project
+
 
 def queryset_gen(search_qs):
     for item in search_qs:
@@ -98,6 +98,36 @@ def search_titles(request):
 
     return render_to_response('mainApp/ajax_search.html', {'project_list':projects})
 
+def join_page(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = JoinForm(request.POST)
+        formcopy = JoinForm(request.POST.copy())
+        # populate data for model init
+        # manipulate post request (form.data)
+        category_ids = []
+        for field in request.POST:
+            if type(field) is str:
+                if field.startswith('category'):
+                    category_ids += [request.POST[field]]
+
+        if len(category_ids) > 0:
+            formcopy.data.setlist('categories', category_ids)
+        form = JoinForm(formcopy.data)
+
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            obj = form.save()
+            # redirect to a new URL:
+            return detail(request, obj.id)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = JoinForm()
+
+    return render(request, 'mainApp/new.html', {'form': form})
 
 class ProjectNewView(generic.edit.CreateView):
     model = Project

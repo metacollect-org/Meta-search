@@ -1,7 +1,7 @@
 {% extends 'mainApp/base.html' %}
 
 {% block content %}
-<form type="get" action=".">
+<form type="get" action=".">{% csrf_token %}
     <input type="text" name="q">
     <button type="submit">Search</button>
 </form>

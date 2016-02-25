@@ -7,7 +7,7 @@
         <button type="submit" value="Create" class="btn btn-primary pull-right">Create</button>
         <h3>New Project</h3>
     </div>
-    <form action="" method="post">{% csrf_token %}
+    <form action="" method="post" id="JoinForm">{% csrf_token %}
         <div class="form-group {{ form.title|is_required }}">
             <label for="{{ form.title.id_for_label }}" class="control-label">Project name</label>
             {% render_field form.title class+="form-control" %}
@@ -128,7 +128,7 @@
                         if (val.id == lastID) {
                             initCategories()
                         }
-                    }).done(function() {
+                    }).done(function () {
                         if (val.id == lastID) {
                             initCategories()
                         }
@@ -139,5 +139,15 @@
 
             });
         })
+
+        $('#JoinForm').submit(function () {
+            var categories = $('#{{ form.categories.id_for_label }}').get(0).selectedOptions
+            for (var i = 0; i < categories.length; i++) {
+                console.log(categories[i]); //second console output
+                var cat = categories[i]
+                $(this).append("<input type=\"hidden\" name=\"category_"+cat.text+"\" value=\""+cat.value+"\"></input>")
+            }
+
+        });
     </script>
 {% endblock %}
