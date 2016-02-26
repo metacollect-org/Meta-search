@@ -20,6 +20,7 @@
             <label for="{{ form.organisation_name.id_for_label }}" class="control-label">Organisation</label>
             {% render_field form.organisation_name class+="form-control" %}
         </div>
+
         <label for="desc_tabs" class="control-label">Descriptions</label>
         <div id="desc_tabs" class="form-group">
             <ul>
@@ -38,6 +39,35 @@
             </div>
             <div id="{{ form.description_ar.id_for_label }}" class="{{ form.description_ar|is_required }}">
                 {% render_field form.description_ar class+="form-control" style="direction: rtl;" %}
+            </div>
+        </div>
+        <div class="form-group {{ form.contact_loc|is_required }}">
+            <label for="{{ form.contact_loc.id_for_label }}" class="control-label">Contact Address</label>
+            <div id="{{ form.contact_loc.id_for_label }}" class="form-group
+            {{ form.contact_loc|is_required }} form-group-addresses">
+                <label for="{{ form.contact_address_street.id_for_label }}" class="control-label">Street</label>
+                {% render_field form.contact_address_street class+="form-control form-control-address" %}
+                <label for="{{ form.contact_address_housenr.id_for_label }}" class="control-label">Number</label>
+                {% render_field form.contact_address_housenr class+="form-control form-control-address" %}
+                <label for="{{ form.contact_address_zip.id_for_label }}" class="control-label">Zip</label>
+                {% render_field form.contact_address_zip class+="form-control form-control-address" %}
+                <label for="{{ form.contact_address_zip.id_for_label }}" class="control-label">City</label>
+                {% render_field form.contact_address_city class+="form-control form-control-address" %}
+                <label for="{{ form.contact_address_country.id_for_label }}" class="control-label">Country</label>
+                {% render_field form.contact_address_country class+="form-control form-control-address" %}
+            </div>
+        </div>
+
+        <div class="form-group {{ form.geo_location|is_required }}">
+            <label for="{{ form.geo_location.id_for_label }}" class="control-label">Area</label>
+            <div id="{{ form.geo_location.id_for_label }}" class="form-group
+            {{ form.geo_location|is_required }} form-group-addresses">
+                <label for="{{ form.area_city.id_for_label }}" class="control-label">City</label>
+                {% render_field form.area_city class+="form-control form-control-address" %}
+                <label for="{{ form.area_state.id_for_label }}" class="control-label">State</label>
+                {% render_field form.area_state class+="form-control form-control-address" %}
+                <label for="{{ form.area_country.id_for_label }}" class="control-label">Country</label>
+                {% render_field form.area_country class+="form-control form-control-address" %}
             </div>
         </div>
         <div class="form-group {{ form.needs|is_required }}">
@@ -62,6 +92,7 @@
             <label for="{{ form.languages.id_for_label }}" class="control-label">Languages</label>
             {% render_field form.languages class+="select2" %}
         </div>
+
         <div class="form-group {{ form.logo|is_required }}">
             <label for="{{ form.logo.id_for_label }}" class="control-label">Logo (<a
                     href="#{{ form.logo.id_for_label }}" id="blob" rel="popover">preview</a>)</label>
@@ -145,7 +176,7 @@
             for (var i = 0; i < categories.length; i++) {
                 console.log(categories[i]); //second console output
                 var cat = categories[i]
-                $(this).append("<input type=\"hidden\" name=\"category_"+cat.text+"\" value=\""+cat.value+"\"></input>")
+                $(this).append("<input type=\"hidden\" name=\"category_" + cat.text + "\" value=\"" + cat.value + "\"></input>")
             }
 
         });
