@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, CharField
+from django.forms import ModelForm, CharField
 from .models import Project
 
 
@@ -10,3 +10,6 @@ class JoinForm(ModelForm):
       for f in Project._meta.get_fields():
          if f.name != 'updated_at' and f.name != 'created_at':
             fields.append(f.name)
+
+   contact_loc = CharField(max_length=200, required=True)
+   geo_location = CharField(max_length=200, required=True)
