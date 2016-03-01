@@ -3,6 +3,13 @@
 {% load widget_tweaks %}
 
 {% block content %}
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+    {% for error in form.errors %}
+        {{error }} is required<br>
+    {% endfor %}
+    </div>
+    {% endif %}
     <div class="page-header" style="margin-top: 0">
         <button type="submit" value="Create" class="btn btn-primary pull-right">Create</button>
         <h3>New Project</h3>

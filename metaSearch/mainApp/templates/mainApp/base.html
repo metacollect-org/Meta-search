@@ -36,7 +36,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'index' %}">meta<b>collect</b></a>
+        <a class="navbar-brand" href="{% url 'index' %}"><small>/\/\&lt;</small> meta<b>collect</b></a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <form class="navbar-form  {% if LANGUAGE_CODE|language_bidi %} navbar-left {% else %} navbar-right {% endif %}" action="{% url 'set_language' %}" method="post" style="padding-top:4px;" id="langSwitch">{% csrf_token %}

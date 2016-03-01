@@ -122,7 +122,8 @@ def join_page(request):
             obj = form.save()
             # redirect to a new URL:
             return detail(request, obj.id)
-
+        else:
+            print(form.errors.as_json())
     # if a GET (or any other method) we'll create a blank form
     else:
         form = JoinForm()
