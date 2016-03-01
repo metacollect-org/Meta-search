@@ -102,7 +102,6 @@ def search_titles(request):
 
     return render_to_response('mainApp/ajax_search.html', {'project_list':projects})
 
-<<<<<<< HEAD
 def do_logout(request):
     logout(request)
     return redirect('/mainApp')
@@ -135,7 +134,6 @@ def register(request):
     return render(request, 'registration/register.html', args)
 
 
-=======
 def join_page(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -167,7 +165,6 @@ def join_page(request):
         form = JoinForm()
 
     return render(request, 'mainApp/new.html', {'form': form})
->>>>>>> 9448f448636dad430e1a10b9d997d7b591ec28ac
 
 class ProjectNewView(generic.edit.CreateView):
     model = Project
