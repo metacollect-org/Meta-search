@@ -3,11 +3,18 @@
 {% load widget_tweaks %}
 
 {% block content %}
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+    {% for error in form.errors %}
+        {{error }} is required<br>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <form action="" method="post" id="JoinForm">{% csrf_token %}
     <div class="page-header" style="margin-top: 0">
         <button type="submit" value="Create" class="btn btn-primary pull-right">Create</button>
         <h3>New Project</h3>
     </div>
-    <form action="" method="post">{% csrf_token %}
         <div class="form-group {{ form.title|is_required }}">
             <label for="{{ form.title.id_for_label }}" class="control-label">Project name</label>
             {% render_field form.title class+="form-control" %}
@@ -20,6 +27,7 @@
             <label for="{{ form.organisation_name.id_for_label }}" class="control-label">Organisation</label>
             {% render_field form.organisation_name class+="form-control" %}
         </div>
+
         <label for="desc_tabs" class="control-label">Descriptions</label>
         <div id="desc_tabs" class="form-group">
             <ul>
@@ -38,6 +46,35 @@
             </div>
             <div id="{{ form.description_ar.id_for_label }}" class="{{ form.description_ar|is_required }}">
                 {% render_field form.description_ar class+="form-control" style="direction: rtl;" %}
+            </div>
+        </div>
+        <div class="form-group {{ form.contact_loc|is_required }}">
+            <label for="{{ form.contact_loc.id_for_label }}" class="control-label">Contact Address</label>
+            <div id="{{ form.contact_loc.id_for_label }}" class="form-group
+            {{ form.contact_loc|is_required }} form-group-addresses">
+                <label for="{{ form.contact_address_street.id_for_label }}" class="control-label">Street</label>
+                {% render_field form.contact_address_street class+="form-control form-control-address" %}
+                <label for="{{ form.contact_address_housenr.id_for_label }}" class="control-label">Number</label>
+                {% render_field form.contact_address_housenr class+="form-control form-control-address" %}
+                <label for="{{ form.contact_address_zip.id_for_label }}" class="control-label">Zip</label>
+                {% render_field form.contact_address_zip class+="form-control form-control-address" %}
+                <label for="{{ form.contact_address_zip.id_for_label }}" class="control-label">City</label>
+                {% render_field form.contact_address_city class+="form-control form-control-address" %}
+                <label for="{{ form.contact_address_country.id_for_label }}" class="control-label">Country</label>
+                {% render_field form.contact_address_country class+="form-control form-control-address" %}
+            </div>
+        </div>
+
+        <div class="form-group {{ form.geo_location|is_required }}">
+            <label for="{{ form.geo_location.id_for_label }}" class="control-label">Area</label>
+            <div id="{{ form.geo_location.id_for_label }}" class="form-group
+            {{ form.geo_location|is_required }} form-group-addresses">
+                <label for="{{ form.area_city.id_for_label }}" class="control-label">City</label>
+                {% render_field form.area_city class+="form-control form-control-address" %}
+                <label for="{{ form.area_state.id_for_label }}" class="control-label">State</label>
+                {% render_field form.area_state class+="form-control form-control-address" %}
+                <label for="{{ form.area_country.id_for_label }}" class="control-label">Country</label>
+                {% render_field form.area_country class+="form-control form-control-address" %}
             </div>
         </div>
         <div class="form-group {{ form.needs|is_required }}">
@@ -62,6 +99,7 @@
             <label for="{{ form.languages.id_for_label }}" class="control-label">Languages</label>
             {% render_field form.languages class+="select2" %}
         </div>
+
         <div class="form-group {{ form.logo|is_required }}">
             <label for="{{ form.logo.id_for_label }}" class="control-label">Logo (<a
                     href="#{{ form.logo.id_for_label }}" id="blob" rel="popover">preview</a>)</label>
@@ -97,6 +135,15 @@
             $('#blob').data('bs.popover').options.content = img;
         });
 
+        function initCategories() {
+            $('#{{ form.categories.id_for_label }}').multiSelect({
+                selectableOptgroup: true,
+                keepOrder: true,
+                selectableHeader: "<div class='control-label'>Selectable items</div>",
+                selectionHeader: "<div class='control-label'>Selections</div>"
+            });
+        }
+
         $(function () {
             $.getJSON("../../api/search/category?parent*isnull=True&format=json", function (data) {
                 var select = document.getElementById('{{ form.categories.id_for_label }}')
@@ -117,11 +164,11 @@
                         opt.innerHTML = val.name
                         grp.appendChild(opt)
                         if (val.id == lastID) {
-                            $('#{{ form.categories.id_for_label }}').multiSelect({selectableOptgroup: true, keepOrder: true});
+                            initCategories()
                         }
-                    }).done(function() {
+                    }).done(function () {
                         if (val.id == lastID) {
-                            $('#{{ form.categories.id_for_label }}').multiSelect({selectableOptgroup: true, keepOrder: true});
+                            initCategories()
                         }
                     });
 
@@ -130,5 +177,15 @@
 
             });
         })
+
+        $('#JoinForm').submit(function () {
+            var categories = $('#{{ form.categories.id_for_label }}').get(0).selectedOptions
+            for (var i = 0; i < categories.length; i++) {
+                console.log(categories[i]); //second console output
+                var cat = categories[i]
+                $(this).append("<input type=\"hidden\" name=\"category_" + cat.text + "\" value=\"" + cat.value + "\"></input>")
+            }
+
+        });
     </script>
 {% endblock %}

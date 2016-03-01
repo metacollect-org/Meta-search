@@ -127,7 +127,7 @@ class GeoLocation(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
     def __str__(self):
-        return str([self.lat, self.lon])
+        return self.name
 
 
 class ProgrammingLanguage(models.Model):
