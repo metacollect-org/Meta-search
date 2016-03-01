@@ -3,11 +3,11 @@
 {% load widget_tweaks %}
 
 {% block content %}
+    <form action="" method="post" id="EditForm">{% csrf_token %}
     <div class="page-header" style="margin-top: 0">
-        <button type="submit" value="Create" class="btn btn-primary pull-right">Create</button>
+        <button type="submit" value="Edit" class="btn btn-primary pull-right">Edit</button>
         <h3>Edit {{project}}</h3>
     </div>
-    <form action="" method="post" id="EditForm">{% csrf_token %}
         <div class="form-group {{ form.title|is_required }}">
             <label for="{{ form.title.id_for_label }}" class="control-label">Project name</label>
             {% render_field form.title class+="form-control" %}
@@ -102,7 +102,7 @@
                    value="{{ form.logo.value }}">
         </div>
         </div>
-        <button type="submit" value="Create" class="btn btn-primary">Create</button>
+        <button type="submit" value="Edit" class="btn btn-primary">Edit</button>
     </form>
 
     {% load staticfiles %}

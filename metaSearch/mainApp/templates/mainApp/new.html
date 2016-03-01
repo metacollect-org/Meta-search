@@ -10,11 +10,11 @@
     {% endfor %}
     </div>
     {% endif %}
+    <form action="" method="post" id="JoinForm">{% csrf_token %}
     <div class="page-header" style="margin-top: 0">
         <button type="submit" value="Create" class="btn btn-primary pull-right">Create</button>
         <h3>New Project</h3>
     </div>
-    <form action="" method="post" id="JoinForm">{% csrf_token %}
         <div class="form-group {{ form.title|is_required }}">
             <label for="{{ form.title.id_for_label }}" class="control-label">Project name</label>
             {% render_field form.title class+="form-control" %}
