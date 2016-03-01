@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login, logout, auth
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404, HttpResponseRedirect
 from django.core.context_processors import csrf
