@@ -67,6 +67,24 @@
           <li><a href="#about">{% trans "About" %}</a></li>
           <li><a href="#contact">{% trans "Contact" %}</a></li>
           <li class="hidden"><a href="#contact">{% trans "FAQ" %}</a></li>
+          {% if request.user.is_authenticated %}
+
+
+
+          <li class="dropdown">
+              <button class=" dropdown-toggle"  id="userLoggedInDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                {{request.user.username}}
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="userLoggedInDropDown">
+                <li><a href="{% url 'user_profile' %}">Profile</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="{% url 'auth_logout' %}">Log Out</a></li>
+              </ul>
+          </li>
+          {% else %}
+          <li><a href="{% url 'auth_login' %}">login</a></li>
+          {% endif %}
         </ul>
         {% endif %}
       </div><!--/.nav-collapse -->

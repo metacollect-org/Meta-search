@@ -1,0 +1,9 @@
+{% extends "mainApp/userMain.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block usersite %}
+{% for project in projects %}
+  <h4 class="content"><a href="{% url 'detail' project.id %}">{{ project.title }}</a></h4>
+{% endfor %}
+
+{%endblock%}

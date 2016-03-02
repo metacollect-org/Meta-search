@@ -1,0 +1,22 @@
+{% extends "mainApp/userMain.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block usersite %}
+<form action="{% url 'user_profile' %}" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    {% for field in form %}
+      <div class="fieldWrapper">
+        {{ field.label_tag }}
+        {{ field }}
+        {{ field.errors }}
+      </div>
+    {% endfor %}
+
+    <input type="submit" value="Submit" />
+</form>
+
+
+
+{%endblock%}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block content %}
+<div class="row">
+    <div id="area-select" class="col-xs-4">
+      <p><a href="{% url 'user_profile' %}">Profile</a></p>
+      <p><a href="{% url 'auth_password_change' %}">Change Password</a></p>
+      <p><a href="{% url 'user_projects' %}">Projects</a></p>
+    </div>
+  <div id="user-site" class="col-xs-8">
+    {% block usersite %}{% endblock %}
+  </div>
+</div>
+{%endblock%}
