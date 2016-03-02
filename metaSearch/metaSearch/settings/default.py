@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_REDIRECT_URL = '/mainApp/'
 LOGOUT_REDIRECT_URL = '/mainApp/'
-
+LOGIN_URL = '/mainApp/accounts/login'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'mainApp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,9 +41,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'haystack',
-    'mainApp',
     'rest_framework',
     'widget_tweaks',
+    'registration',
+    'guardian',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,6 +61,13 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'metaSearch.urls'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+
 
 TEMPLATES = [
     {
@@ -164,5 +173,11 @@ EMAIL_HOST_USER = '<email_address>'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+# django-registration-redux settings
 
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
+
+#django-guardian settings
+ANONYMOUS_USER_ID = -1
 

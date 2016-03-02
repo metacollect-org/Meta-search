@@ -4,6 +4,8 @@ import csv
 from mainApp import models
 from mainApp.models import Project, Category, ProgrammingLanguage, PageLanguage, Kind, GeoLocation
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import Group
+from guardian.shortcuts import assign_perm
 
 
 # 0  id
@@ -151,6 +153,12 @@ class Command(BaseCommand):
         print("Initializing Categories")
         self.init_categories()
         print("Initializing Projects")
+
+        #group of users, which are allowed to edit each project
+        editors, created = Group.objects.get_or_create(name='editors')
+        if created:
+            editors.save()
+
         csvReader = csv.reader(getProjectCsvData().split('\n'), delimiter=',')
         first_line= csvReader.__next__() # skip the first row, because these are the column names
         print(first_line)
@@ -306,6 +314,9 @@ class Command(BaseCommand):
                                         newPro.categories.add(currentCat)
                                     if currentCat.parent != None and len(newPro.categories.all().filter(pk=currentCat.parent.pk)) == 0:
                                         newPro.categories.add(currentCat.parent)
+
+
+                assign_perm('change_project', editors, newPro)
 
                 newPro.save()
             else:

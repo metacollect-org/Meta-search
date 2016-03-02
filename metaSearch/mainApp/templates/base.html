@@ -77,13 +77,13 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" aria-labelledby="userLoggedInDropDown">
-                <li><a href="#">Profile</a></li>
+                <li><a href="{% url 'user_profile' %}">Profile</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="{% url 'logout' %}">Log Out</a></li>
+                <li><a href="{% url 'auth_logout' %}">Log Out</a></li>
               </ul>
           </li>
           {% else %}
-          <li><a href="{% url 'login' %}">login</a></li>
+          <li><a href="{% url 'auth_login' %}">login</a></li>
           {% endif %}
         </ul>
         {% endif %}

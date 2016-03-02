@@ -7,6 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import pre_save
 from geopy.geocoders import Nominatim
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+
 
 import time
 
@@ -143,7 +145,7 @@ class Project(models.Model):
     kind = models.ManyToManyField(Kind)
     organisation_name = models.CharField(max_length=200, blank=True, default='')
     categories = models.ManyToManyField(Category)
-
+    created_by = models.ForeignKey(User, blank=True, null=True)
     description_de = models.TextField()
     description_en = models.TextField(blank = True, default='')
     description_fr = models.TextField(blank = True, default='')

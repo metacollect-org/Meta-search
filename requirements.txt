@@ -8,3 +8,5 @@ djangorestframework-xml
 djangorestframework-yaml
 django-widget-tweaks
 django-cors-headers
+django-registration-redux
+django-guardian
