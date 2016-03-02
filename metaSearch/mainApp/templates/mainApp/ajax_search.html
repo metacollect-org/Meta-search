@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-xs-4 print-pull-right">
                 <div class="header">{% trans "Projectname" %}</div>
-                <h4 class="content"><a href="{% url 'detail' project.id %}">
+                <h4 class="content"><a href="{% url 'detail' project.id %}" style="word-wrap:break-word;">
                     {{ project.title }}</a></h4>
                 <div class="header">{% trans "Categories" %}</div>
                 <p>{% for category in project.categories.all %}
