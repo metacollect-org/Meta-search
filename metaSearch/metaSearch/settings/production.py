@@ -6,6 +6,11 @@ ALLOWED_HOSTS = [
   '*'
 ]
 
+LOGIN_REDIRECT_URL = 'http://django.dsini20.schedar.uberspace.de/mainApp/'
+LOGOUT_REDIRECT_URL = 'http://django.dsini20.schedar.uberspace.de/mainApp/'
+LOGIN_URL = 'http://django.dsini20.schedar.uberspace.de/mainApp/accounts/login'
+
+
 
 DATABASES = {
     'default': {
