@@ -1,8 +1,12 @@
-
-@media print
-{
-    .no-print, .no-print *
-    {
+@media print {
+    .no-print, .no-print * {
         display: none !important;
+    }
+
+    .print-pull-right{width: 150%;}
+
+    a:link:after, a:visited:after {
+        content: "";
+        font-size: 70%;
     }
 }

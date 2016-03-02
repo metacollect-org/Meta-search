@@ -2,28 +2,35 @@
 {% get_current_language as LANGUAGE_CODE %}
 
 {% if project_list %}
-	<p>{{project_list.count}} projects found</p>
-    {% for project in project_list %}
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="header">{% trans "Projectname" %}</div>
-        <h4 class="content"><a href="{% url 'detail' project.id %}">{{ project.title }}</a></h4>
-        <div class="header">{% trans "Categories" %}</div>
-        <p>{%for category in project.categories.all%}
-            {%if category.parent %}
-            {{category.parent.name}}-->{{category.name}},
-            {% else %}
-            {{category.name}},
-            {% endif %}
-          {% endfor %}
-        </p>
-      </div>
+    <div class="page-header" style="margin-top: 0">
+    <p>{{ project_list.count }} projects found
+        <a type="button" onClick="window.print()" class="no-print btn btn-primary pull-right"><span
+                class='glyphicon glyphicon-print'></span></a></p>
+    </div>
 
-      <div class="col-xs-8">
-        <div class="header">{% trans "Description" %}</div>
-        <img class="media-object" src="{{project.logo}}" alt="Logo placeholder" style="max-height:100px; max-width:100px;">
-        <p class="content">{{ project.get_description }}</p>
-        <!--
+    {% for project in project_list %}
+        <div class="row">
+            <div class="col-xs-4 print-pull-right">
+                <div class="header">{% trans "Projectname" %}</div>
+                <h4 class="content"><a href="{% url 'detail' project.id %}">
+                    {{ project.title }}</a></h4>
+                <div class="header">{% trans "Categories" %}</div>
+                <p>{% for category in project.categories.all %}
+                    {% if category.parent %}
+                        {{ category.parent.name }}-->{{ category.name }},
+                    {% else %}
+                        {{ category.name }},
+                    {% endif %}
+                {% endfor %}
+                </p>
+            </div>
+
+            <div class="col-xs-8 print-pull-right">
+                <div class="header">{% trans "Description" %}</div>
+                <img class="media-object" src="{{ project.logo }}" alt="Logo placeholder"
+                     style="max-height:100px; max-width:100px;">
+                <p class="content">{{ project.get_description }}</p>
+                <!--
         {% if project.description_de %}
         <p class="content">{{ project.description_de }}</p>
         {% elif project.description_en %}
@@ -32,9 +39,9 @@
         <p class="content">{% trans "No description available" %}</p>
         {% endif %}
         -->
-      </div>
-    </div>
-      <hr>
+            </div>
+        </div>
+        <hr>
     {% endfor %}
 {% else %}
     <p class="hidden">No Projects were found.</p>
