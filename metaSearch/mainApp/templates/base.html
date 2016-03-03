@@ -71,11 +71,12 @@
 
 
 
-          <li class="dropdown navbar-form navbar-right">
-              <button class=" dropdown-toggle"  id="userLoggedInDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <li class="dropdown">
+              <div class=" dropdown-toggle"  id="userLoggedInDropDown" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="true" style="padding: 15px 15px;">
                 {{request.user.username}}
                 <span class="caret"></span>
-              </button>
+              </div>
               <ul class="dropdown-menu" aria-labelledby="userLoggedInDropDown">
                 <li><a href="{% url 'user_profile' %}">Profile</a></li>
                 <li role="separator" class="divider"></li>
