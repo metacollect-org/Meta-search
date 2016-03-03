@@ -4,9 +4,11 @@ from .models import Project
 from .models import Category
 from .models import PageLanguage
 from .models import Kind
+from guardian.admin import GuardedModelAdmin
+
 # Register your models here.
 
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(GuardedModelAdmin):
     list_display = ('title', 'url', 'is_online')
 
 admin.site.register(Project, ProjectAdmin)

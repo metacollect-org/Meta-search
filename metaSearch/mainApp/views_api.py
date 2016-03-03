@@ -111,6 +111,11 @@ def apply_filters(all_objects, params):
     for (key,action, values) in params:
         search_field = key + '__' + action if action != '' else key
         for value in values:
+
+            try:
+                value=eval(value, {"__builtins__":None})
+            except TypeError:
+                pass
             try:
                 all_objects = all_objects.filter(**{search_field: value})
             except FieldError:
