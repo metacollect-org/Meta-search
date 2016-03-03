@@ -17,6 +17,7 @@ urlpatterns = [
     # url(r'^new/', views.ProjectNewView.as_view(), name='new'),
     url(r'^new/', views.join_page, name='new'),
     url(r'^(?P<project_id>\d+)/edit/$', views.edit_page, name='project-edit'),
+    url(r'^(?P<project_id>\d+)/delete/$', views.delete_page, name='project-delete'),
     url(r'^data/', views.data, name='data'),
     url(r'^accounts/profile', views.user_profile, name='user_profile'),
     url(r'^accounts/projects', views.user_projects, name='user_projects'),
