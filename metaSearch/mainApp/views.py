@@ -212,6 +212,12 @@ def join_page(request):
     return render(request, 'mainApp/new.html', {'form': form})
 
 @login_required
+def delete_page(request, project_id):
+    return render(request, 'registration/not_allowed_delete.html')
+
+
+
+@login_required
 def edit_page(request, project_id):
 
     selected_project = Project.objects.get(pk=project_id)
