@@ -16,7 +16,6 @@ urlpatterns = [
     url(r'^search/fulltext', views.search_fulltext, name='fulltext'),
     # url(r'^new/', views.ProjectNewView.as_view(), name='new'),
     url(r'^new/', views.join_page, name='new'),
-    url(r'^(?P<pk>[0-9]+)/delete/$', views.ProjectDelete.as_view(), name='project-delete'),
     url(r'^(?P<project_id>\d+)/edit/$', views.edit_page, name='project-edit'),
     url(r'^data/', views.data, name='data'),
     url(r'^accounts/profile', views.user_profile, name='user_profile'),
