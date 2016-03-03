@@ -296,13 +296,13 @@ def init_geo_locations(**kwargs):
             contact_loc = contact_loc.strip(', ')
             if contact_loc != '':
                 try:
-                    instance.contact_location = GeoLocation.objects.get(name=contact_loc)
+                    instance.contact_loc = GeoLocation.objects.get(name=contact_loc)
                 except ObjectDoesNotExist:
                     lat, lon, address = get_geo_location(contact_loc)
                     new_location = GeoLocation(lat=lat, lon=lon, address=address, name=contact_loc)
                     new_location.save()
-                    instance.contact_location = new_location
+                    instance.contact_loc = new_location
         except Exception as e:
-            pass
+            print(e)
 
 pre_save.connect(init_geo_locations, Project)

@@ -195,7 +195,7 @@ def join_page(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             obj = form.save(commit=True)
-            init_geo_locations(instance=obj)
+            #init_geo_locations(instance=obj)
             obj.created_by = request.user
             obj.save()
 
@@ -249,8 +249,8 @@ def edit_page(request, project_id):
 
             # for id in category_ids:
             #     obj.categories.add(Category.objects.get(pk=id))
-            init_geo_locations(instance=obj)
-            obj.save()
+            #init_geo_locations(instance=obj)
+            #obj.save()
             # redirect to a new URL:
             return detail(request, obj.id)
         else:
