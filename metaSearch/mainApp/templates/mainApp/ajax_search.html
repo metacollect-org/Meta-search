@@ -17,7 +17,7 @@
                 <div class="header">{% trans "Categories" %}</div>
                 <p>{% for category in project.categories.all %}
                     {% if category.parent %}
-                        {{ category.parent.name }}-->{{ category.name }},
+                        {{ category.parent.name }}>{{ category.name }},
                     {% else %}
                         {{ category.name }},
                     {% endif %}
