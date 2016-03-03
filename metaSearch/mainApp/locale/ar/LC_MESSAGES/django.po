@@ -44,7 +44,7 @@ msgid "About"
 msgstr "معلومات عنا"
 
 #: templates/mainApp/base.html:57 templates/mainApp/base.html.py:63
-msgid "Join"
+msgid "New Project"
 msgstr "اتصل"
 
 #: templates/mainApp/base.html:58 templates/mainApp/base.html.py:62

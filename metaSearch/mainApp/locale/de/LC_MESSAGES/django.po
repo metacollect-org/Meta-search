@@ -43,8 +43,8 @@ msgid "About"
 msgstr "Über uns"
 
 #: templates/mainApp/base.html:57 templates/mainApp/base.html.py:63
-msgid "Join"
-msgstr "Mach mit"
+msgid "New Project"
+msgstr "Neues Projekt"
 
 #: templates/mainApp/base.html:58 templates/mainApp/base.html.py:62
 msgid "Data"

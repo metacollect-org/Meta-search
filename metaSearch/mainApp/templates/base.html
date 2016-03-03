@@ -57,13 +57,15 @@
           <li class="hidden"><a href="#contact">{% trans "FAQ" %}</a></li>
           <li><a href="#contact">{% trans "Contact" %}</a></li>
           <li><a href="#about">{% trans "About" %}</a></li>
-          <li><a href="{% url 'new' %}">{% trans "Join" %}</a></li>
+          <li><a href="{% url 'new' %}">{% trans "New Project" %}</a></li>
           <li><a href="{% url 'data' %}">{% trans "Data" %}</a></li>
         </ul>
         {% else %}
         <ul class="nav navbar-nav navbar-right">
           <li><a href="{% url 'data' %}">{% trans "Data" %}</a></li>
-          <li><a href="{% url 'new' %}">{% trans "Join" %}</a></li>
+          {% if request.user.is_authenticated %}
+          <li><a href="{% url 'new' %}">{% trans "New Project" %}</a></li>
+          {% endif %}
           <li><a href="#about">{% trans "About" %}</a></li>
           <li><a href="#contact">{% trans "Contact" %}</a></li>
           <li class="hidden"><a href="#contact">{% trans "FAQ" %}</a></li>
