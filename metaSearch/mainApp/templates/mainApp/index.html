@@ -3,10 +3,10 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% block content %}
 <div class="row">
-  <div method="GET" class="form-inline col-xs-12"> {% csrf_token %}
+  <form method="GET" class="form-inline col-xs-12" action="{% url 'fulltext' %}"> {% csrf_token %}
     <input type="text" name="query" class="form-control" id="search" autocomplete="off">
-    <button type="submit" value="Search" class="btn btn-default hidden">{% trans "Search" %}</button>
-  </div>
+    <button type="submit" value="Search" class="btn btn-default">{% trans "Fulltext" %}</button>
+  </form>
 </div>
 <div class="row">
     <div id="filter-area" class="col-xs-4 no-print">

@@ -1,8 +1,10 @@
+{% extends "base.html" %}
 {% load i18n %}
-{% get_current_language as LANGUAGE_CODE %}
 
+{% block content %}
 {% if project_list %}
     <div class="page-header" style="margin-top: 0">
+    <h3>{% trans "Search results for " %} <b>{{query}}</b></h3>
     <p>{{ project_list.count }} {% trans "projects found" %}
         <a type="button" onClick="window.print()" class="no-print btn btn-primary pull-right"><span
                 class='glyphicon glyphicon-print'></span></a></p>
@@ -46,3 +48,5 @@
 {% else %}
     <p class="hidden">No Projects were found.</p>
 {% endif %}
+
+{%endblock%}
