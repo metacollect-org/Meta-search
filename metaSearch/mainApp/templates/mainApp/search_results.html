@@ -1,8 +1,25 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 {% load staticfiles %}
-
 {% block content %}
+<div class="row">
+  <form method="GET" class="form-inline col-xs-12" action="{% url 'fulltext' %}"> {% csrf_token %}
+    <input type="text" name="query" class="form-control no-print" id="search" autocomplete="off"></br>
+    <button type="submit" value="Search" class="btn btn-default no-print">{% trans "Fulltext" %}</button>
+  </form>
+</div>
+<div class="row">
+    <div id="filter-area" class="col-xs-4 no-print">
+      {% for cat in categories %}
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="category" value="{{cat.id}}"> {{cat.name}}
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+<div id="search-results" class="col-xs-8">
 {% if project_list %}
     <div class="page-header" style="margin-top: 0">
     <h3>{% trans "Search results for " %} <b>{{query}}</b></h3>
@@ -56,3 +73,4 @@
 {% endif %}
 
 {%endblock%}
+</div></div>
