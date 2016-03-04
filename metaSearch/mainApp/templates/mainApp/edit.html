@@ -6,11 +6,11 @@
 {% block content %}
     <form action="" method="post" id="EditForm">{% csrf_token %}
     <div class="page-header" style="margin-top: 0">
-        <button type="submit" value="Edit" class="btn btn-primary pull-right">Edit</button>
-        <h3>Edit {{project}}</h3>
+        <button type="submit" value="Edit" class="btn btn-primary pull-right">{% trans "Save" %}</button>
+        <h3>{% trans "Edit" %} {{project}}</h3>
     </div>
         <div class="form-group {{ form.title|is_required }}">
-            <label for="{{ form.title.id_for_label }}" class="control-label">Project name</label>
+            <label for="{{ form.title.id_for_label }}" class="control-label">{% trans "Project name" %}</label>
             {% render_field form.title class+="form-control" %}
         </div>
         <div class="form-group {{ form.url|is_required }}">
@@ -22,7 +22,7 @@
             {% render_field form.organisation_name class+="form-control" %}
         </div>
 
-        <label for="desc_tabs" class="control-label">Descriptions</label>
+        <label for="desc_tabs" class="control-label">{% trans "Descriptions" %}</label>
         <div id="desc_tabs" class="form-group">
             <ul>
                 <li class="{{ form.description_de|is_required }}"><a
@@ -43,67 +43,67 @@
             </div>
         </div>
         <div class="form-group {{ form.contact_loc }}">
-            <label for="{{ form.contact_loc.id_for_label }}" class="control-label">Contact Address</label>
+            <label for="{{ form.contact_loc.id_for_label }}" class="control-label">{% trans "Contact Address" %}</label>
             <div id="{{ form.contact_loc.id_for_label }}" class="form-group
             {{ form.contact_loc}} form-group-addresses">
-                <label for="{{ form.contact_address_street.id_for_label }}" class="control-label">Street</label>
+                <label for="{{ form.contact_address_street.id_for_label }}" class="control-label">{% trans "Street" %}</label>
                 {% render_field form.contact_address_street class+="form-control form-control-address" %}
-                <label for="{{ form.contact_address_housenr.id_for_label }}" class="control-label">Number</label>
+                <label for="{{ form.contact_address_housenr.id_for_label }}" class="control-label">{% trans "Number" %}</label>
                 {% render_field form.contact_address_housenr class+="form-control form-control-address" %}
-                <label for="{{ form.contact_address_zip.id_for_label }}" class="control-label">Zip</label>
+                <label for="{{ form.contact_address_zip.id_for_label }}" class="control-label">{% trans "Zip" %}</label>
                 {% render_field form.contact_address_zip class+="form-control form-control-address" %}
-                <label for="{{ form.contact_address_zip.id_for_label }}" class="control-label">City</label>
+                <label for="{{ form.contact_address_zip.id_for_label }}" class="control-label">{% trans "City" %}</label>
                 {% render_field form.contact_address_city class+="form-control form-control-address" %}
-                <label for="{{ form.contact_address_country.id_for_label }}" class="control-label">Country</label>
+                <label for="{{ form.contact_address_country.id_for_label }}" class="control-label">{% trans "Country" %}</label>
                 {% render_field form.contact_address_country class+="form-control form-control-address" %}
             </div>
         </div>
 
         <div class="form-group {{ form.geo_location }}">
-            <label for="{{ form.geo_location.id_for_label }}" class="control-label">Area</label>
+            <label for="{{ form.geo_location.id_for_label }}" class="control-label">{% trans "Area" %}</label>
             <div id="{{ form.geo_location.id_for_label }}" class="form-group
             {{ form.geo_location }} form-group-addresses">
-                <label for="{{ form.area_city.id_for_label }}" class="control-label">City</label>
+                <label for="{{ form.area_city.id_for_label }}" class="control-label">{% trans "City" %}</label>
                 {% render_field form.area_city class+="form-control form-control-address" %}
-                <label for="{{ form.area_state.id_for_label }}" class="control-label">State</label>
+                <label for="{{ form.area_state.id_for_label }}" class="control-label">{% trans "State" %}</label>
                 {% render_field form.area_state class+="form-control form-control-address" %}
-                <label for="{{ form.area_country.id_for_label }}" class="control-label">Country</label>
+                <label for="{{ form.area_country.id_for_label }}" class="control-label">{% trans "Country" %}</label>
                 {% render_field form.area_country class+="form-control form-control-address" %}
             </div>
         </div>
         <div class="form-group {{ form.needs|is_required }}">
-            <label for="{{ form.needs.id_for_label }}" class="control-label">Needs</label>
+            <label for="{{ form.needs.id_for_label }}" class="control-label">{% trans "Needs" %}</label>
             {% render_field form.needs placeholder="max 200 characters" class+="form-control" %}
         </div>
         <div class="form-group {{ form.status|is_required }}">
-            <label for="{{ form.status.id_for_label }}" class="control-label">Status</label>
+            <label for="{{ form.status.id_for_label }}" class="control-label">{% trans "Status" %}</label>
             {% render_field form.status class+="form-control" %}
         </div>
         <div class="form-group {{ form.kind|is_required }}">
-            <label for="{{ form.kind.id_for_label }}" class="control-label">Kind</label>
+            <label for="{{ form.kind.id_for_label }}" class="control-label">{% trans "Kind" %}</label>
             {% render_field form.kind class+="select2" %}
         </div>
         <div class="form-group {{ form.categories|is_required }}">
-            <label for="{{ form.categories.id_for_label }}" class="control-label">Categories</label>
+            <label for="{{ form.categories.id_for_label }}" class="control-label">{% trans "Categories" %}</label>
             <select id="{{ form.categories.id_for_label }}"
                     multiple="multiple" style="position: absolute; left: -9999px;">
             </select>
             <!--<pre>{{form.categories.value}}</pre>-->
         </div>
         <div class="form-group {{ form.languages|is_required }}">
-            <label for="{{ form.languages.id_for_label }}" class="control-label">Languages</label>
+            <label for="{{ form.languages.id_for_label }}" class="control-label">{% trans "Languages" %}</label>
             {% render_field form.languages class+="select2" %}
         </div>
 
         <div class="form-group {{ form.logo|is_required }}">
-            <label for="{{ form.logo.id_for_label }}" class="control-label">Logo (<a
-                    href="#{{ form.logo.id_for_label }}" id="blob" rel="popover">preview</a>)</label>
+            <label for="{{ form.logo.id_for_label }}" class="control-label">{% trans "Logo" %} (<a
+                    href="#{{ form.logo.id_for_label }}" id="blob" rel="popover">{% trans "preview" %}</a>)</label>
             <!--{% render_field form.logo type="url" class+="form-control" %}-->
             <input type="url" class="form-control" name="{{ form.logo.name }}" id="{{ form.logo.id_for_label }}"
                    value="{{ form.logo.value }}">
         </div>
         </div>
-        <button type="submit" value="Edit" class="btn btn-primary">Edit</button>
+        <button type="submit" value="Edit" class="btn btn-primary">{% trans "Save" %}</button>
     </form>
 
     {% load staticfiles %}
@@ -117,14 +117,14 @@
                 width: null
             });
 
-            var img = '<img src="' + $('#{{form.logo.id_for_label}}').val() + ' width="50" height="50" alt="Image not found" />';
+            var img = '<img src="' + $('#{{form.logo.id_for_label}}').val() + '" width="50" height="50" alt="Image not found" />';
             $('#blob').popover({html: true, content: img, trigger: 'hover'});
         });
 
         $('#{{form.logo.id_for_label}}').change(function () {
             var text = $('#{{form.logo.id_for_label}}').val();
             if (text.endsWith('.png') || text.endsWith('.jpg') || text.endsWith('.svg') || text.endsWith('.gif'))
-                var img = '<img src="' + text + ' width="50" height="50" alt="Image not found" />';
+                var img = '<img src="' + text.trim() + '" width="50" height="50" alt="Image not found" />';
             else
                 var img = '<p>No image URL provided.</p>';
             $('#blob').data('bs.popover').options.content = img;

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block content %}
 
 {% if form.errors %}
@@ -32,8 +32,8 @@
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p> New? <a href="{% url 'registration_register'%}">Register!</a></p>
+<p> {% trans "New?" %} <a href="{% url 'registration_register'%}">{% trans "Register" %}!</a></p>
 {# Assumes you setup the password_reset view in your URLconf #}
-{# <p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
+{# <p><a href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a></p>#}
 
 {% endblock %}

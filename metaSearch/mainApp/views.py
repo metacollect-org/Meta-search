@@ -89,8 +89,8 @@ def search_fulltext(request):
     # project_list = SearchQuerySetWrapper(project_list)
     for project in filtered_projects:
         print(len(project.categories.all()))
-    context = {'project_list': filtered_projects}
-    return render(request, 'mainApp/index.html', context)
+    context = {'project_list': filtered_projects, 'query': search_text}
+    return render(request, 'mainApp/search_results.html', context)
 
 
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-05 14:46+0100\n"
+"POT-Creation-Date: 2016-03-04 07:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,39 +18,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:179 templates/mainApp/index.html:40
+#: models.py:193 templates/mainApp/ajax_search.html:39
+#: templates/mainApp/search_results.html:41
 msgid "No description available"
 msgstr "Keine Beschreibung vorhanden"
 
-#: models.py:184
+#: models.py:198
 msgid "Translations are not known"
 msgstr "Übersetzungen sind nicht bekannt"
 
-#: models.py:192
+#: models.py:206
 msgid "Belongs to no categories"
 msgstr "Gehört keiner Kategorie an"
 
-#: templates/mainApp/base.html:54 templates/mainApp/base.html.py:66
+#: templates/base.html:60 templates/base.html.py:74
 msgid "FAQ"
 msgstr "FAQ"
 
-#: templates/mainApp/base.html:55 templates/mainApp/base.html.py:65
+#: templates/base.html:61 templates/base.html.py:73
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/mainApp/base.html:56 templates/mainApp/base.html.py:64
+#: templates/base.html:62 templates/base.html.py:72
 msgid "About"
 msgstr "Über uns"
 
-#: templates/mainApp/base.html:57 templates/mainApp/base.html.py:63
-msgid "New Project"
-msgstr "Neues Projekt"
+#: templates/base.html:63 templates/base.html.py:70
+msgid "Add Project"
+msgstr "Projekt hinzufügen"
 
-#: templates/mainApp/base.html:58 templates/mainApp/base.html.py:62
+#: templates/base.html:64 templates/base.html.py:68
 msgid "Data"
 msgstr "Data"
 
-#: templates/mainApp/detail.html:20 templates/mainApp/index.html:31
+#: templates/base.html:85 templates/mainApp/userMain.html:7
+msgid "Profile"
+msgstr "Profil"
+
+#: templates/base.html:87
+msgid "Log Out"
+msgstr "Abmelden"
+
+#: templates/base.html:91
+msgid "Login"
+msgstr "Anmelden"
+
+#: templates/mainApp/ajax_search.html:6
+#: templates/mainApp/search_results.html:8
+msgid "projects found"
+msgstr "Projekte gefunden"
+
+#: templates/mainApp/ajax_search.html:14
+#: templates/mainApp/search_results.html:16
+msgid "Projectname"
+msgstr "Projektname"
+
+#: templates/mainApp/ajax_search.html:17 templates/mainApp/edit.html:87
+#: templates/mainApp/new.html:94 templates/mainApp/search_results.html:19
+msgid "Categories"
+msgstr "Kategorien"
+
+#: templates/mainApp/ajax_search.html:29 templates/mainApp/detail.html:20
+#: templates/mainApp/search_results.html:31
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -58,25 +87,129 @@ msgstr "Beschreibung"
 msgid "Available in the languages"
 msgstr "In folgenden Sprachen verfügbar"
 
-#: templates/mainApp/detail.html:26
-msgid "Area of operation"
-msgstr "Einsatzgebiet"
+#: templates/mainApp/detail.html:26 templates/mainApp/edit.html:75
+#: templates/mainApp/new.html:82
+msgid "Needs"
+msgstr "Bedarf"
 
 #: templates/mainApp/detail.html:28
+msgid "Area of operation"
+msgstr "Einzugsgebiet"
+
+#: templates/mainApp/detail.html:30
 msgid "Contact address"
 msgstr "Kontaktadresse"
 
-#: templates/mainApp/index.html:7
-msgid "Search"
-msgstr "Suchen"
+#: templates/mainApp/edit.html:9 templates/mainApp/edit.html.py:106
+msgid "Save"
+msgstr "Speichern"
 
-#: templates/mainApp/index.html:24
-msgid "Projectname"
+#: templates/mainApp/edit.html:10
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: templates/mainApp/edit.html:13 templates/mainApp/new.html:20
+msgid "Project name"
 msgstr "Projektname"
 
-#: templates/mainApp/index.html:26
-msgid "Categories"
-msgstr "Kategorien"
+#: templates/mainApp/edit.html:25 templates/mainApp/new.html:32
+msgid "Descriptions"
+msgstr "Beschreibungen"
 
-#~ msgid "Register"
-#~ msgstr "Registrieren"
+#: templates/mainApp/edit.html:46 templates/mainApp/new.html:53
+msgid "Contact Address"
+msgstr "Kontaktadresse"
+
+#: templates/mainApp/edit.html:49 templates/mainApp/new.html:56
+msgid "Street"
+msgstr "Straße"
+
+#: templates/mainApp/edit.html:51 templates/mainApp/new.html:58
+msgid "Number"
+msgstr "Hausnummer"
+
+#: templates/mainApp/edit.html:53 templates/mainApp/new.html:60
+msgid "Zip"
+msgstr "PLZ"
+
+#: templates/mainApp/edit.html:55 templates/mainApp/edit.html.py:66
+#: templates/mainApp/new.html:62 templates/mainApp/new.html.py:73
+msgid "City"
+msgstr "Stadt"
+
+#: templates/mainApp/edit.html:57 templates/mainApp/edit.html.py:70
+#: templates/mainApp/new.html:64 templates/mainApp/new.html.py:77
+msgid "Country"
+msgstr "Land"
+
+#: templates/mainApp/edit.html:63 templates/mainApp/new.html:70
+msgid "Area"
+msgstr "Einzugsgebiet"
+
+#: templates/mainApp/edit.html:68 templates/mainApp/new.html:75
+msgid "State"
+msgstr "Bundesland"
+
+#: templates/mainApp/edit.html:79 templates/mainApp/new.html:86
+msgid "Status"
+msgstr "Status"
+
+#: templates/mainApp/edit.html:83 templates/mainApp/new.html:90
+msgid "Kind"
+msgstr "Art"
+
+#: templates/mainApp/edit.html:94 templates/mainApp/new.html:100
+msgid "Languages"
+msgstr "Sprachen"
+
+#: templates/mainApp/edit.html:99 templates/mainApp/new.html:105
+msgid "Logo"
+msgstr "Logo"
+
+#: templates/mainApp/edit.html:100 templates/mainApp/new.html:106
+msgid "preview"
+msgstr "Vorschau"
+
+#: templates/mainApp/index.html:8
+msgid "Fulltext"
+msgstr "Volltextsuche"
+
+#: templates/mainApp/new.html:16 templates/mainApp/new.html.py:112
+msgid "Create"
+msgstr "Erstellen"
+
+#: templates/mainApp/new.html:17
+msgid "New Project"
+msgstr "Neues Projekt"
+
+#: templates/mainApp/search_results.html:7
+msgid "Search results for "
+msgstr "Suchergebnisse für "
+
+#: templates/mainApp/userMain.html:8
+msgid "Change Password"
+msgstr "Passwort ändern"
+
+#: templates/mainApp/userMain.html:9
+msgid "Projects"
+msgstr "Projekte"
+
+#: templates/registration/logged_out.html:5
+msgid "Logged out!"
+msgstr "Abgemeldet!"
+
+#: templates/registration/login.html:35
+msgid "New?"
+msgstr "Neu?"
+
+#: templates/registration/login.html:35
+msgid "Register"
+msgstr "Registrieren"
+
+#: templates/registration/password_change_done.html:4
+msgid "Password change Successful!"
+msgstr "Passwortänderung erfolgreich!"
+
+#: templates/registration/registration_complete.html:5
+msgid "Registration completed!"
+msgstr "Registrierung abgeschlossen!"
