@@ -101,7 +101,7 @@ def search_fulltext(request):
     return render(request, 'mainApp/search_results.html', context)
 
 
-# @cache_page(60 * 60)
+@cache_page(60 * 60)
 def search_titles(request):
     text=request.GET.get('q')
     cat_text = request.GET.get('category')
