@@ -1,15 +1,19 @@
 $(function(){
 
     $('#search').keyup(function() {
-        $.ajax({
-            type: "GET",
-            url: "/mainApp/search/autocomplete/",
-            data: {
-                'q' : $('#search').val(),
-            },
-            success: searchSuccess,
-            dataType: 'html'
-        });
+        if($('#search').val().length > 3){
+          $.ajax({
+              type: "GET",
+              url: "/mainApp/search/autocomplete/",
+              data: {
+                  'q' : $('#search').val(),
+              },
+              success: searchSuccess,
+              dataType: 'html'
+          });
+        }else{
+          searchSuccess("",null ,null )
+        }
 
     });
 

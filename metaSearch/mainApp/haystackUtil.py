@@ -46,3 +46,10 @@ class HayStackUtilities:
         for result in results2:
             ids.append(result.id)
         return ids
+
+    def search_autocomplete_ids(text):
+        results = SearchQuerySet().filter(content_auto=text)
+        ids=[]
+        for result in results:
+            ids.append(result.object.id)
+        return ids

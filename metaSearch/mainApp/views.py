@@ -16,6 +16,9 @@ from guardian.shortcuts import get_objects_for_user
 from guardian.decorators import permission_required_or_403
 from django.contrib.auth.models import Group
 from django.utils.decorators import method_decorator
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+
 
 from mainApp.models import init_geo_locations
 
@@ -33,6 +36,7 @@ def queryset_gen(search_qs):
     for item in search_qs:
         yield item.objects
 
+# @cache_page(60 * 60)
 def index(request):
     categories = Category.objects.all().filter(parent=None).order_by('name')
     # c = Category.getCategoryTree()
@@ -59,6 +63,7 @@ def detail(request, project_id):
     print(project.url)
     return render(request, 'mainApp/detail.html', {'project': project, 'desc': desc})
 
+# @cache_page(60*15)
 def search_fulltext(request):
     search_text = request.GET.get('query')
     print("Search_Text : " + str(search_text))
@@ -96,24 +101,26 @@ def search_fulltext(request):
     return render(request, 'mainApp/search_results.html', context)
 
 
-
+# @cache_page(60 * 60)
 def search_titles(request):
-    print(request.GET.get('q'))
+    text=request.GET.get('q')
+    cat_text = request.GET.get('category')
     projects = None
-    if request.GET.get('q') and len(request.GET.get('q')) > 3:
-        projects = SearchQuerySet().filter(content_auto=request.GET.get('q', ''))
-        projects = SearchQuerySetWrapper(projects)
-    elif request.GET.getlist('category'):
-        projects = Project.objects.all()
-    else:
-        projects = None
+    category_ids = None
+    if not cat_text and not text:
+        return render_to_response('mainApp/ajax_search.html', {'project_list':None})
+    if cat_text and len(cat_text) >= 1:
+        category_ids = request.GET.get('category').split(',')
 
-    category_ids = request.GET.getlist('category')
+    projects = Project.objects.all()
+    if text and len(text) > 3:
 
-    print(category_ids)
+        project_ids = HayStackUtilities.search_autocomplete_ids(text)
+        projects = projects.filter(pk__in=project_ids)
 
-    for cat_id in category_ids:
-        projects = projects.filter(categories__id=cat_id)
+    if category_ids:
+        for cat_id in category_ids:
+            projects = projects.filter(categories__pk=cat_id)
 
     return render_to_response('mainApp/ajax_search.html', {'project_list':projects})
 

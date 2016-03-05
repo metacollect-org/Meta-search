@@ -13,6 +13,11 @@ from mainApp.customExceptions import FieldWrong
 from mainApp.elastic_util import GeoSearch
 from django.views.decorators.cache import cache_page
 
+@cache_page(60 * 60)
+@api_view(['GET'])
+def get_all_projects(request, format=None):
+    serializer = ProjectSerializer(Project.objects.all(), many=True)
+    return Response(serializer.data)
 
 @cache_page(60 * 15)
 @api_view(['GET'])

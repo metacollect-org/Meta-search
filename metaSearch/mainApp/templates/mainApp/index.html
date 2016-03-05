@@ -3,11 +3,11 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% load staticfiles %}
 {% block content %}
-<div class="row">
-  <form method="GET" class="form-inline col-xs-12" action="{% url 'fulltext' %}"> {% csrf_token %}
+<form method="GET" action="{% url 'fulltext' %}"> {% csrf_token %}
+
+<div class="row form-inline col-xs-12">
     <input type="text" name="query" class="form-control" id="search" autocomplete="off"></br>
     <button type="submit" value="Search" class="btn btn-default">{% trans "Fulltext" %}</button>
-  </form>
 </div>
 <div class="row">
     <div id="filter-area" class="col-xs-3 no-print">
@@ -21,4 +21,6 @@
     </div>
   <div id="search-results" class="col-xs-8"></div>
 </div>
+</form>
+
 {%endblock%}
