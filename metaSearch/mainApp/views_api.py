@@ -11,8 +11,10 @@ from mainApp.haystackUtil import SearchQuerySetWrapper
 from haystack.inputs import AutoQuery
 from mainApp.customExceptions import FieldWrong
 from mainApp.elastic_util import GeoSearch
+from django.views.decorators.cache import cache_page
 
 
+@cache_page(60 * 15)
 @api_view(['GET'])
 def project_search_fulltext(request, text, format=None):
     resultList = SearchQuerySet().filter(content=AutoQuery(text))
@@ -24,6 +26,7 @@ def project_search_fulltext(request, text, format=None):
     serializer = ProjectSerializer(resultList, many=True)
     return Response(serializer.data)
 
+@cache_page(60 * 15)
 @api_view(['GET'])
 def search_project(request, format=None):
     params = deconstruct_params(request)
@@ -38,7 +41,7 @@ def search_project(request, format=None):
     return Response(serializer.data)
 
 
-
+@cache_page(60 * 15)
 @api_view(['GET'])
 def search_category(request, format=None):
     params = deconstruct_params(request)
@@ -51,6 +54,7 @@ def search_category(request, format=None):
     serializer = CategorySerializer(currentResults, many=True)
     return Response(serializer.data)
 
+@cache_page(60 * 15)
 @api_view(['GET'])
 def search_kind(request, format=None):
     params = deconstruct_params(request)
@@ -63,6 +67,7 @@ def search_kind(request, format=None):
     serializer = KindSerializer(currentResults, many=True)
     return Response(serializer.data)
 
+@cache_page(60 * 15)
 @api_view(['GET'])
 def search_language(request, format=None):
     params = deconstruct_params(request)
@@ -75,6 +80,7 @@ def search_language(request, format=None):
     serializer = PageLanguageSerializer(currentResults, many=True)
     return Response(serializer.data)
 
+@cache_page(60 * 15)
 @api_view(['GET'])
 def search_radius(request, format=None):
     '''
