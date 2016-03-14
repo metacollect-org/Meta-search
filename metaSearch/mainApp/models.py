@@ -9,7 +9,8 @@ from geopy.geocoders import Nominatim
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-
+import operator
+import collections
 import time
 
 WAIT_TIME_GEO_REQUESTS = 2  # in seconds, ABSOLUTE MIN IS 1 SECOND
@@ -113,14 +114,38 @@ class Category(models.Model):
     description_fr = models.TextField(default="Aucune description disponible")
     description_ar = models.TextField(default="لا يوجد وصف متاح")
 
-
-
+    def get_name(self):
+        lang_code = translation.get_language()
+        if lang_code == 'en':
+            return getattr(self, 'name')
+        if not getattr(self, 'name_'+lang_code):
+            if getattr(self, 'name_de'):
+                return getattr(self, 'name_de')
+            else:
+                return self.name
+        return getattr(self, 'name_'+lang_code)
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
+
+    def is_root(self):
+        return self.parent is None
+
+    def get_category_tree():
+        tree = {}
+        for cat in Category.objects.all():
+            if cat.is_root():
+                tree[cat] = ()
+
+
+        for cat in Category.objects.all():
+            if not cat.is_root():
+                tree[cat.parent] += (cat,)
+
+        return collections.OrderedDict(sorted(tree.items(), key=lambda t: t[0].name))
 
 # Create your models here.
 class GeoLocation(models.Model):

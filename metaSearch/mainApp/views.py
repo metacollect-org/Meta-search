@@ -39,9 +39,10 @@ def queryset_gen(search_qs):
 # @cache_page(60 * 60)
 def index(request):
     categories = Category.objects.all().filter(parent=None).order_by('name')
+    cat_list = Category.get_category_tree()
     # c = Category.getCategoryTree()
     # print(c)
-    context = {'categories': categories}
+    context = {'categories': categories, 'cat_list': cat_list}
     return render(request, 'mainApp/index.html', context)
 
 def data(request):
@@ -94,8 +95,8 @@ def search_fulltext(request):
     # project_list = SearchQuerySetWrapper(project_list)
     for project in filtered_projects:
         print(len(project.categories.all()))
-    categories = Category.objects.all().filter(parent=None).order_by('name')
-    # c = Category.getCategoryTree()
+    #categories = Category.objects.all().filter(parent=None).order_by('name')
+    categories = Category.get_category_tree()
     # print(c)
     context = {'project_list': filtered_projects, 'query': search_text, 'categories': categories}
     return render(request, 'mainApp/search_results.html', context)

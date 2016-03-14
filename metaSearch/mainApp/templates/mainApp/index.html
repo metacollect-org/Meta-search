@@ -11,11 +11,16 @@
 </div>
 <div class="row">
     <div id="filter-area" class="col-xs-3 no-print">
-      {% for cat in categories %}
+      {% for parent, subcats in cat_list.items %}
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="category" value="{{cat.id}}"> {{cat.name}}
-          </label>
+            <input type="checkbox" name="category" value="{{parent.id}}"> {{parent.get_name}}
+          </label><br>
+            {% for scat in subcats %}
+              <label style="text-indent: 20px">
+                <input type="checkbox" name="category" value="{{scat.id}}"> {{scat.get_name}}
+              </label><br>
+            {% endfor %}
         </div>
       {% endfor %}
     </div>
